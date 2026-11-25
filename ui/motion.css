@@ -1,0 +1,184 @@
+/* Gerak murni CSS. Hanya transform/opacity yang dianimasikan, kecuali bilah
+   progres yang memang memakai transform skala (lebih ringan daripada width). */
+
+@property --counter-value {
+  syntax: "<integer>";
+  inherits: false;
+  initial-value: 0;
+}
+
+@keyframes scan-sweep {
+  0% { transform: translateX(-110%); opacity: 0; }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { transform: translateX(110%); opacity: 0; }
+}
+
+@keyframes draw-box {
+  from { stroke-dashoffset: 1400; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes char-reveal {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes stage-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes result-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shake-once {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-3px); }
+}
+
+@keyframes count-up {
+  from { --counter-value: 0; }
+  to { --counter-value: var(--target, 0); }
+}
+
+@keyframes progress-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Momen utama: sapuan pindai + kotak tergambar + huruf muncul per huruf.
+   Ketiga animasi berjalan paralel dan selesai pada ~1,6 dtk. */
+.scan-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--cream);
+  border: 1px dashed var(--blush);
+  margin-bottom: 12px;
+}
+
+.scan-frame .scan-line {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 18%;
+  background: linear-gradient(90deg, transparent, rgba(244, 123, 128, 0.55), transparent);
+  pointer-events: none;
+  animation: scan-sweep 900ms ease-in-out 1 both;
+}
+
+.scan-frame svg.plate-outline {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.scan-frame svg.plate-outline rect {
+  fill: none;
+  stroke: var(--coral);
+  stroke-width: 5;
+  stroke-dasharray: 1400;
+  stroke-dashoffset: 1400;
+  animation: draw-box 700ms ease-out 300ms 1 both;
+}
+
+.result-text span {
+  display: inline-block;
+  opacity: 0;
+  animation: char-reveal 160ms steps(1, end) forwards;
+}
+
+.stage-card {
+  opacity: 0;
+  animation: stage-in 320ms ease-out forwards;
+}
+
+.stage-card:nth-child(1) { animation-delay: 0ms; }
+.stage-card:nth-child(2) { animation-delay: 80ms; }
+.stage-card:nth-child(3) { animation-delay: 160ms; }
+.stage-card:nth-child(4) { animation-delay: 240ms; }
+.stage-card:nth-child(5) { animation-delay: 320ms; }
+.stage-card:nth-child(6) { animation-delay: 400ms; }
+.stage-card:nth-child(7) { animation-delay: 480ms; }
+.stage-card:nth-child(8) { animation-delay: 560ms; }
+.stage-card:nth-child(9) { animation-delay: 640ms; }
+.stage-card:nth-child(10) { animation-delay: 720ms; }
+.stage-card:nth-child(11) { animation-delay: 800ms; }
+
+.result-card {
+  animation: result-in 360ms ease-out 1 both;
+}
+
+.failure-card {
+  animation: shake-once 420ms ease-in-out 1 both;
+}
+
+.stat-value {
+  animation: count-up 900ms ease-out 1 both;
+}
+
+.stat-value .counter-number::after {
+  content: counter(stat-ticker);
+  counter-reset: stat-ticker var(--counter-value);
+}
+
+.progress-fill {
+  transform-origin: left center;
+  animation: progress-fill 700ms ease-out 1 both;
+}
+
+.intro-only {
+  animation: result-in 420ms ease-out 1 both;
+}
+
+button,
+[data-testid="stSlider"],
+[data-testid="stCheckbox"],
+.card,
+.stat-card,
+.stage-card {
+  transition: transform 150ms ease, opacity 150ms ease;
+}
+
+.card:hover,
+.stat-card:hover,
+.stage-card:hover {
+  transform: translateY(-2px);
+}
+
+button:hover,
+button:active {
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .stage-card,
+  .result-text span,
+  .result-card,
+  .intro-only {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .stat-value .counter-number::after {
+    content: attr(data-value);
+  }
+
+  .progress-fill {
+    transform: none !important;
+  }
+}
