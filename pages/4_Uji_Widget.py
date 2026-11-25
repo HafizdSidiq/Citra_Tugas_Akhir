@@ -5,9 +5,7 @@ from __future__ import annotations
 import pandas as pd
 import streamlit as st
 
-from ui.components import bootstrap, mark_intro_done, page_header
-
-bootstrap()
+from ui.components import mark_intro_done, page_header
 
 with st.container(border=True, key="kartu_widget"):
     page_header(

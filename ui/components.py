@@ -17,18 +17,33 @@ from core.pipeline import PipelineParams
 
 BASE_DIR = Path(__file__).parent
 THEME_CSS = BASE_DIR / "theme.css"
+LOGO_DIR = BASE_DIR.parent / "assets" / "logo"
 
 WARNA_STAT = ("stat-putih", "stat-ungu", "stat-kuning", "stat-tosca", "stat-pink")
 
+# Font dimuat lewat <link> di entrypoint, bukan @import di dalam CSS, agar
+# tidak terjadi FOUT ketika halaman berganti.
+FONT_LINKS = (
+    '<link rel="preconnect" href="https://fonts.googleapis.com">'
+    '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
+    '<link rel="stylesheet" '
+    'href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700'
+    '&family=Unbounded:wght@600;800&display=swap">'
+)
+
+
+def inject_theme() -> None:
+    """Suntik font dan gaya sekali dari entrypoint, sebelum navigasi.
+
+    Memakai st.html, bukan st.markdown, agar seluruh CSS tidak dipotong oleh
+    parser markdown saat string HTML panjang disuntikkan.
+    """
+    st.html(FONT_LINKS + f"<style>{THEME_CSS.read_text(encoding='utf-8')}</style>")
+
 
 def bootstrap() -> None:
-    """Suntik gaya. Konfigurasi halaman ada di app.py."""
-    st.markdown(
-        f"<style>{THEME_CSS.read_text(encoding='utf-8')}</style>",
-        unsafe_allow_html=True,
-    )
-    if "intro_done" not in st.session_state:
-        st.session_state["intro_done"] = False
+    """Alias lama; kini hanya meneruskan ke inject_theme(), tanpa session_state."""
+    inject_theme()
 
 
 def mark_intro_done() -> None:
@@ -141,6 +156,29 @@ def render_empty_state(title: str, message: str) -> None:
         f'<span>{html.escape(message)}</span></div>',
         unsafe_allow_html=True,
     )
+
+
+def render_logo(animated: bool, ukuran: int = 160) -> None:
+    """Tampilkan logo SCAN dari berkas aset; SVG disuntik lewat iframe."""
+    lebar = max(120, min(220, int(ukuran)))
+    if animated:
+        isi = (LOGO_DIR / "logo-animasi-inline.html").read_text(encoding="utf-8")
+        isi = isi.replace('aria-label="Logo SCAN animasi"', 'aria-label="Logo SCAN"')
+        tambahan = (
+            "<style>html,body{margin:0;background:transparent;overflow:hidden}"
+            f".wadah-logo{{width:{lebar}px;--scn-fg:#14112b;--scn-accent:#00c4cc}}"
+            "</style>"
+        )
+    else:
+        isi = (LOGO_DIR / "logo-utama.svg").read_text(encoding="utf-8")
+        isi = isi.replace("#0E1B2B", "#14112b").replace("#0A9F92", "#00c4cc")
+        tambahan = (
+            "<style>html,body{margin:0;background:transparent;overflow:hidden}"
+            f".logo-statis{{width:{lebar}px}}"
+            ".logo-statis svg{display:block;width:100%;height:auto}</style>"
+        )
+        isi = f'<div class="logo-statis">{isi}</div>'
+    st.iframe(isi + tambahan, width="stretch", height=lebar + 4)
 
 
 def render_scan_overlay() -> None:
@@ -392,8 +430,7 @@ def render_hero_stage() -> None:
             f'<span class="nama">{html.escape(nama)}</span></section>'
         )
     css = """
-      @import url('https://fonts.googleapis.com/css2?family=Figtree:wght@500;700&family=Unbounded:wght@600;800&display=swap');
-      html,body{margin:0;background:transparent;font-family:Figtree,sans-serif}
+      html,body{margin:0;background:transparent;font-family:Figtree,system-ui,sans-serif}
       .panggung{position:relative;width:100%;height:420px;border-radius:30px;overflow:hidden;
         background:#6d3cff;box-shadow:0 40px 70px -34px rgba(20,17,43,.6)}
       .jalur{display:flex;width:800%;height:100%;animation:putar 16s steps(8,end) infinite}
@@ -419,7 +456,7 @@ def render_hero_stage() -> None:
       @media(max-width:560px){.panggung{height:330px}.plat b{font-size:18px}.nomor{font-size:54px}}
     """
     st.iframe(
-        f"<style>{css}</style>"
+        FONT_LINKS + f"<style>{css}</style>"
         '<div class="panggung"><div class="jalur">' + "".join(panels) + "</div>"
         '<div class="garis"></div>'
         '<span class="keterangan">Simulasi ilustratif · bukan hasil OCR sungguhan</span></div>',

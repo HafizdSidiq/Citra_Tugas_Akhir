@@ -14,7 +14,6 @@ from core.evaluation import predictions_from_csv, predictions_from_dataset
 from core.metrics import evaluate
 from core.pipeline import PipelineParams
 from ui.components import (
-    bootstrap,
     mark_intro_done,
     page_header,
     parameter_widgets,
@@ -24,8 +23,6 @@ from ui.components import (
     render_summary_card,
     render_stat_grid,
 )
-
-bootstrap()
 
 DEFAULT_REFERENCE = Path("docs/acuan_ocr.csv")
 CONDITIONS = [

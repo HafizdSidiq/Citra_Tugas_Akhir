@@ -1,13 +1,39 @@
-"""Entrypoint aplikasi: hanya router halaman."""
+"""Entrypoint aplikasi: gaya dimuat sekali, lalu router halaman."""
 
 from __future__ import annotations
 
+from pathlib import Path
+
+# Impor berat dipanaskan di sini agar kunjungan pertama ke halaman Baca Plat
+# dan Evaluasi tidak menahan render. Tidak ada logika bisnis di entrypoint.
+import cv2  # noqa: F401
+import kagglehub  # noqa: F401
+import pandas as pd  # noqa: F401
 import streamlit as st
+
+from core.pipeline import PipelineParams  # noqa: F401
+from ui.components import inject_theme
+
+LOGO_DIR = Path(__file__).resolve().parent / "assets" / "logo"
 
 st.set_page_config(
     page_title="Plat Nomor",
-    page_icon="🚗",
+    page_icon=str(LOGO_DIR / "favicon.png"),
     layout="wide",
+)
+
+# Animasi masuk hanya untuk render pertama dalam satu sesi.
+if "intro_done" not in st.session_state:
+    st.session_state["intro_done"] = False
+
+# Satu-satunya injeksi CSS/font. Elemen entrypoint bertahan saat pindah halaman,
+# sehingga menu pil melayang dan latar tidak pernah kembali ke gaya bawaan.
+inject_theme()
+
+st.logo(
+    str(LOGO_DIR / "logo-utama.svg"),
+    icon_image=str(LOGO_DIR / "favicon.png"),
+    size="large",
 )
 
 HALAMAN = [

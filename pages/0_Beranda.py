@@ -5,19 +5,18 @@ from __future__ import annotations
 import streamlit as st
 
 from ui.components import (
-    bootstrap,
     mark_intro_done,
     page_header,
     render_bento,
     render_hero_stage,
+    render_logo,
 )
-
-bootstrap()
 
 with st.container(border=True, key="kartu_beranda"):
     kiri, kanan = st.columns([1.05, 1], gap="large")
 
     with kiri:
+        render_logo(animated=True, ukuran=160)
         page_header(
             "Plat terbaca, langkahnya terlihat.",
             "Baca plat nomor Indonesia dengan pengolahan citra klasik. Unggah foto, "

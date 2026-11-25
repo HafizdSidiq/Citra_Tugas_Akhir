@@ -9,15 +9,12 @@ import streamlit as st
 
 from core.dataset import DATASET_HANDLE, dataset_status, gallery_items, get_image_bytes
 from ui.components import (
-    bootstrap,
     mark_intro_done,
     page_header,
     render_empty_state,
     render_failure_card,
     render_stat_grid,
 )
-
-bootstrap()
 
 REFERENCE_CSV = Path("docs/acuan_ocr.csv")
 

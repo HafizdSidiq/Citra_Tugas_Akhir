@@ -36,7 +36,7 @@ Unggahan pengguna diproses di memori dan tidak ditulis ke disk. Rincian pemeriks
 ## Struktur
 
 ```text
-app.py                  Router st.navigation + header pil melayang
+app.py                  Router st.navigation + favicon dan logo di header pil
 pages/
   0_Beranda.py          Hero simulasi 8 tahap dan kartu bento
   1_Baca_Plat.py        Pilih foto → atur → hasil (satu halaman)
@@ -51,7 +51,9 @@ core/
   tests/                23 tes pytest
 ui/
   theme.css             Token Lukis, Unbounded/Figtree, kartu bulat, tema terang
-  components.py         Komponen tampilan bersama + panggung iframe
+  components.py         Komponen tampilan bersama + panggung iframe dan logo
+assets/
+  logo/                 Logo SCAN statis, animasi, dan favicon
 docs/
   referensi/lukis.html  Satu-satunya referensi gaya antarmuka
   acuan_ocr.csv         Template 197 kotak dari 100 citra (teks masih kosong)
@@ -63,7 +65,7 @@ packages.txt
 
 ## Tampilan
 
-Gaya antarmuka mengikuti `docs/referensi/lukis.html`: ungu `#6d3cff`, tosca `#00c4cc`, kuning `#ffd23f`, pink `#ff6b9d`, tinta `#14112b`, dan latar `#fbf9ff`. Judul memakai Unbounded, isi memakai Figtree. Kartu sangat bulat (26–30 px) bergantian antara putih, ungu, kuning, dan tosca tanpa garis dekoratif. Navigasi adalah pil melayang dengan logo gradien statis dan penanda menu aktif; toolbar bawaan Streamlit disembunyikan.
+Gaya antarmuka mengikuti `docs/referensi/lukis.html`: ungu `#6d3cff`, tosca `#00c4cc`, kuning `#ffd23f`, pink `#ff6b9d`, tinta `#14112b`, dan latar `#fbf9ff`. Judul memakai Unbounded, isi memakai Figtree. Kartu sangat bulat (26–30 px) bergantian antara putih, ungu, kuning, dan tosca tanpa garis dekoratif. Navigasi adalah pil melayang dengan logo SCAN statis dan wordmark **SCAN**; favicon memakai `assets/logo/favicon.png`. Logo animasi pemindai hanya tampil sekali di hero Beranda. Toolbar bawaan Streamlit disembunyikan.
 
 Aplikasi memakai tema terang saja agar tidak bertabrakan dengan preferensi gelap sistem operasi. Semua teks antarmuka berbahasa Indonesia dan menyebut aksinya, misalnya **Baca plat**. Tombol ungu naik 3 px dengan bayangan kuning dan sedikit miring saat dihover, lalu mengecil saat ditekan. Fokus keyboard memakai garis pink. `prefers-reduced-motion` mematikan garis pindai dan animasi masuk. JavaScript dan SVG hanya disuntik lewat `st.iframe`, bukan `st.markdown`.
 
@@ -104,4 +106,4 @@ python -m compileall -q app.py core ui pages
 
 ## Screenshot
 
-Tangkapan layar tiap halaman ada di akar `docs/screenshots/` dan `docs/screenshots/light/` dengan tema terang. `docs/screenshots/beranda_preferensi_gelap.png` menunjukkan tampilan tetap terang saat browser meminta mode gelap. Animasi dinonaktifkan saat pengambilan dengan `prefers-reduced-motion`. Folder `docs/screenshots/dark/` sudah dihapus karena aplikasi tidak lagi menyediakan tema gelap.
+Tangkapan layar tiap halaman ada di akar `docs/screenshots/` dan `docs/screenshots/light/` dengan tema terang. `docs/screenshots/beranda_preferensi_gelap.png` menunjukkan tampilan tetap terang saat browser meminta mode gelap. Animasi dinonaktifkan saat pengambilan dengan `prefers-reduced-motion`. Folder `docs/screenshots/dark/` sengaja tidak dipakai karena aplikasi tetap terang saja, termasuk logo statis dan animasinya.

@@ -1,0 +1,52 @@
+<!-- Logo SCAN animasi, versi inline untuk web.
+     Warna diatur dari CSS halaman lewat dua variabel:
+       --scn-fg      bingkai dan piksel
+       --scn-accent  garis pindai
+     Contoh di app Citra:  .wadah-logo { --scn-fg: var(--ink); --scn-accent: var(--t); }
+     Lebar logo diatur dari .wadah-logo (default 120px). -->
+<style>
+.wadah-logo { width: 120px; --scn-fg: #0E1B2B; --scn-accent: #0A9F92; }
+.scn { display: block; width: 100%; height: auto; overflow: visible; }
+.scn .br { fill: none; stroke: var(--scn-fg); stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
+.scn .px rect { fill: var(--scn-fg); }
+.scn .ln { fill: var(--scn-accent); }
+.scn .scan { animation: scn-sweep 4.5s linear infinite; }
+.scn .r1 { animation: scn-r1 4.5s linear infinite; }
+.scn .r2 { animation: scn-r2 4.5s linear infinite; }
+.scn .r3 { animation: scn-r3 4.5s linear infinite; }
+.scn .r4 { animation: scn-r4 4.5s linear infinite; }
+@keyframes scn-sweep { 0%,5% { transform: translateY(0) } 45%,50% { transform: translateY(68px) } 90%,100% { transform: translateY(0) } }
+@keyframes scn-r1 { 0%,11.6% { opacity: .15 } 12.6%,82.4% { opacity: 1 } 83.4%,100% { opacity: .15 } }
+@keyframes scn-r2 { 0%,20% { opacity: .15 } 21%,74% { opacity: 1 } 75%,100% { opacity: .15 } }
+@keyframes scn-r3 { 0%,28% { opacity: .15 } 29%,66% { opacity: 1 } 67%,100% { opacity: .15 } }
+@keyframes scn-r4 { 0%,36.4% { opacity: .15 } 37.4%,57.6% { opacity: 1 } 58.6%,100% { opacity: .15 } }
+@media (prefers-reduced-motion: reduce) {
+  .scn .scan, .scn .r1, .scn .r2, .scn .r3, .scn .r4 { animation: none; }
+  .scn .scan { transform: translateY(34px); }
+  .scn .px { opacity: 1; }
+}
+</style>
+
+<div class="wadah-logo">
+  <svg class="scn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Logo SCAN animasi">
+    <title>SCAN</title>
+    <defs>
+      <linearGradient id="scn-glow" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" style="stop-color: var(--scn-accent); stop-opacity: 0"/>
+        <stop offset="1" style="stop-color: var(--scn-accent); stop-opacity: .4"/>
+      </linearGradient>
+    </defs>
+    <g class="br">
+      <path d="M16 40V24a8 8 0 0 1 8-8h16"/><path d="M80 16h16a8 8 0 0 1 8 8v16"/>
+      <path d="M104 80v16a8 8 0 0 1-8 8H80"/><path d="M40 104H24a8 8 0 0 1-8-8V80"/>
+    </g>
+    <g class="px r1"><rect x="34" y="34" width="10" height="10" rx="2.5"/><rect x="48" y="34" width="10" height="10" rx="2.5"/><rect x="76" y="34" width="10" height="10" rx="2.5"/></g>
+    <g class="px r2"><rect x="48" y="48" width="10" height="10" rx="2.5"/><rect x="62" y="48" width="10" height="10" rx="2.5"/><rect x="76" y="48" width="10" height="10" rx="2.5"/></g>
+    <g class="px r3"><rect x="34" y="62" width="10" height="10" rx="2.5"/><rect x="62" y="62" width="10" height="10" rx="2.5"/><rect x="76" y="62" width="10" height="10" rx="2.5"/></g>
+    <g class="px r4"><rect x="34" y="76" width="10" height="10" rx="2.5"/><rect x="48" y="76" width="10" height="10" rx="2.5"/><rect x="62" y="76" width="10" height="10" rx="2.5"/></g>
+    <g class="scan">
+      <rect x="14" y="12" width="92" height="14" fill="url(#scn-glow)"/>
+      <rect class="ln" x="8" y="24" width="104" height="4" rx="2"/>
+    </g>
+  </svg>
+</div>

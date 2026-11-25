@@ -12,7 +12,6 @@ from core.dataset import DatasetError, dataset_status, gallery_items, get_image_
 from core.pipeline import PipelineParams, process_image
 from ui.components import (
     append_history,
-    bootstrap,
     mark_intro_done,
     page_header,
     parameter_widgets,
@@ -25,8 +24,6 @@ from ui.components import (
     render_scan_overlay,
     render_summary_card,
 )
-
-bootstrap()
 
 PRESET = {
     "Standar": {

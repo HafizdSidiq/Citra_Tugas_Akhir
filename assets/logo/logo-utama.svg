@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Logo SCAN">
+  <title>SCAN</title>
+  <defs><linearGradient id="glow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0A9F92" stop-opacity="0"/><stop offset="1" stop-color="#0A9F92" stop-opacity=".4"/></linearGradient></defs>
+  <style>.br{fill:none;stroke:#0E1B2B;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}.px rect{fill:#0E1B2B}.ln{fill:#0A9F92}</style>
+  <g class="br"><path d="M16 40V24a8 8 0 0 1 8-8h16"/><path d="M80 16h16a8 8 0 0 1 8 8v16"/><path d="M104 80v16a8 8 0 0 1-8 8H80"/><path d="M40 104H24a8 8 0 0 1-8-8V80"/></g>
+  <g class="px r1"><rect x="34" y="34" width="10" height="10" rx="2.5"/><rect x="48" y="34" width="10" height="10" rx="2.5"/><rect x="76" y="34" width="10" height="10" rx="2.5"/></g>
+  <g class="px r2"><rect x="48" y="48" width="10" height="10" rx="2.5"/><rect x="62" y="48" width="10" height="10" rx="2.5"/><rect x="76" y="48" width="10" height="10" rx="2.5"/></g>
+  <g class="px r3"><rect x="34" y="62" width="10" height="10" rx="2.5"/><rect x="62" y="62" width="10" height="10" rx="2.5"/><rect x="76" y="62" width="10" height="10" rx="2.5"/></g>
+  <g class="px r4"><rect x="34" y="76" width="10" height="10" rx="2.5"/><rect x="48" y="76" width="10" height="10" rx="2.5"/><rect x="62" y="76" width="10" height="10" rx="2.5"/></g>
+  <g transform="translate(0 34)"><rect x="14" y="12" width="92" height="14" fill="url(#glow)"/><rect class="ln" x="8" y="24" width="104" height="4" rx="2"/></g>
+</svg>

@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700&family=Unbounded:wght@600;800&display=swap");
-
 /* Gaya diadaptasi dari docs/referensi/lukis.html.
    Token warna, tipografi, kelengkungan, dan easing mengikuti referensi. */
 :root {
@@ -30,6 +28,15 @@
   font-family: "Figtree", system-ui, sans-serif;
 }
 
+/* Saat halaman berganti, Streamlit menandai elemen lama sebagai "stale".
+   Sembunyikan benar-benar (bukan sekadar diredupkan) agar isi halaman
+   sebelumnya tidak tampil sesaat sebelum halaman baru selesai dirender. */
+[data-stale="true"] {
+  opacity: 0 !important;
+  transition: none !important;
+  pointer-events: none !important;
+}
+
 .stMarkdown, .stMarkdown *, [data-testid="stCaptionContainer"] {
   font-family: "Figtree", system-ui, sans-serif;
   color: var(--ink);
@@ -51,7 +58,6 @@
    judul. */
 [data-testid="stHeader"],
 [data-testid="stToolbar"],
-[data-testid="stSidebarHeader"],
 [data-testid="stSidebarUserContent"],
 [data-testid="stSidebarCollapseButton"],
 [data-testid="stSidebarResizeHandle"] {
@@ -83,13 +89,27 @@
   z-index: 40;
 }
 
-[data-testid="stSidebar"]::before {
-  content: "";
+/* Logo asli menggantikan kotak gradien dekoratif. */
+[data-testid="stSidebarHeader"] {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
   flex: 0 0 auto;
-  width: 26px;
-  height: 26px;
-  border-radius: 9px 9px 9px 3px;
-  background: conic-gradient(var(--v), var(--p), var(--y), var(--t), var(--v));
+}
+
+[data-testid="stSidebarHeader"]::after {
+  content: "SCAN";
+  font: 800 18px "Unbounded", "Figtree", sans-serif;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+[data-testid="stSidebarLogo"] {
+  display: block !important;
+  width: 32px !important;
+  height: 32px !important;
+  object-fit: contain;
 }
 
 [data-testid="stSidebarNav"] {
@@ -144,22 +164,6 @@
 [data-testid="stSidebarNav"] a[aria-current="page"] *,
 [data-testid="stSidebarNav"] li[aria-selected="true"] a * {
   color: #fff !important;
-}
-
-.logo-lukis {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font: 800 22px "Unbounded", "Figtree", sans-serif;
-  color: var(--ink);
-  text-decoration: none;
-}
-
-.logo-lukis i {
-  width: 26px;
-  height: 26px;
-  border-radius: 9px 9px 9px 3px;
-  background: conic-gradient(var(--v), var(--p), var(--y), var(--t), var(--v));
 }
 
 /* ---------- Kartu aplikasi ---------- */

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Logo SCAN animasi">
+  <title>SCAN</title>
+  <defs><linearGradient id="glow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--scn-accent);stop-opacity:0"/><stop offset="1" style="stop-color:var(--scn-accent);stop-opacity:.4"/></linearGradient></defs>
+  <style>
+    :root{--scn-fg:#0E1B2B;--scn-accent:#0A9F92}
+    @media (prefers-color-scheme:dark){:root{--scn-fg:#E6EEF5;--scn-accent:#2DE0CC}}
+    .br{fill:none;stroke:var(--scn-fg);stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
+    .px rect{fill:var(--scn-fg)}
+    .ln{fill:var(--scn-accent)}
+    .scan{animation:sweep 4.5s linear infinite}
+    .r1{animation:r1 4.5s linear infinite}.r2{animation:r2 4.5s linear infinite}
+    .r3{animation:r3 4.5s linear infinite}.r4{animation:r4 4.5s linear infinite}
+    @keyframes sweep{0%,5%{transform:translateY(0)}45%,50%{transform:translateY(68px)}90%,100%{transform:translateY(0)}}
+    @keyframes r1{0%,11.6%{opacity:.15}12.6%,82.4%{opacity:1}83.4%,100%{opacity:.15}}
+    @keyframes r2{0%,20%{opacity:.15}21%,74%{opacity:1}75%,100%{opacity:.15}}
+    @keyframes r3{0%,28%{opacity:.15}29%,66%{opacity:1}67%,100%{opacity:.15}}
+    @keyframes r4{0%,36.4%{opacity:.15}37.4%,57.6%{opacity:1}58.6%,100%{opacity:.15}}
+    @media (prefers-reduced-motion:reduce){.scan,.r1,.r2,.r3,.r4{animation:none}.scan{transform:translateY(34px)}.px{opacity:1}}
+  </style>
+  <g class="br"><path d="M16 40V24a8 8 0 0 1 8-8h16"/><path d="M80 16h16a8 8 0 0 1 8 8v16"/><path d="M104 80v16a8 8 0 0 1-8 8H80"/><path d="M40 104H24a8 8 0 0 1-8-8V80"/></g>
+  <g class="px r1"><rect x="34" y="34" width="10" height="10" rx="2.5"/><rect x="48" y="34" width="10" height="10" rx="2.5"/><rect x="76" y="34" width="10" height="10" rx="2.5"/></g>
+  <g class="px r2"><rect x="48" y="48" width="10" height="10" rx="2.5"/><rect x="62" y="48" width="10" height="10" rx="2.5"/><rect x="76" y="48" width="10" height="10" rx="2.5"/></g>
+  <g class="px r3"><rect x="34" y="62" width="10" height="10" rx="2.5"/><rect x="62" y="62" width="10" height="10" rx="2.5"/><rect x="76" y="62" width="10" height="10" rx="2.5"/></g>
+  <g class="px r4"><rect x="34" y="76" width="10" height="10" rx="2.5"/><rect x="48" y="76" width="10" height="10" rx="2.5"/><rect x="62" y="76" width="10" height="10" rx="2.5"/></g>
+  <g class="scan"><rect x="14" y="12" width="92" height="14" fill="url(#glow)"/><rect class="ln" x="8" y="24" width="104" height="4" rx="2"/></g>
+</svg>

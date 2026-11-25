@@ -1,0 +1,753 @@
+{
+  "url": "http://localhost:8502/",
+  "baseline": {
+    "appFont": "Figtree, system-ui, sans-serif",
+    "fontFigtree": true,
+    "introOnlyCount": 1,
+    "isPill": true,
+    "nav": {
+      "display": "flex",
+      "flexDirection": "row",
+      "linkCount": 4
+    },
+    "navOrSidebarStale": false,
+    "pageTitle": "Plat terbaca, langkahnya terlihat.",
+    "sidebar": {
+      "borderRadius": "40px",
+      "display": "flex",
+      "height": 72,
+      "left": 143,
+      "position": "fixed",
+      "top": "10px",
+      "width": 1136
+    },
+    "staleTotal": 0,
+    "visibleStaleCount": 0,
+    "visibleStaleSample": []
+  },
+  "screenshots": [
+    {
+      "step": 1,
+      "label": "Beranda",
+      "delay_ms": 0,
+      "file": "01_beranda_0ms.png",
+      "diag": {
+        "appFont": "Figtree, system-ui, sans-serif",
+        "fontFigtree": true,
+        "introOnlyCount": 0,
+        "isPill": true,
+        "nav": {
+          "display": "flex",
+          "flexDirection": "row",
+          "linkCount": 4
+        },
+        "navOrSidebarStale": false,
+        "pageTitle": "Plat terbaca, langkahnya terlihat.",
+        "sidebar": {
+          "borderRadius": "40px",
+          "display": "flex",
+          "height": 72,
+          "left": 143,
+          "position": "fixed",
+          "top": "10px",
+          "width": 1136
+        },
+        "staleTotal": 0,
+        "visibleStaleCount": 0,
+        "visibleStaleSample": []
+      }
+    },
+    {
+      "step": 1,
+      "label": "Beranda",
+      "delay_ms": 100,
+      "file": "01_beranda_100ms.png",
+      "diag": {
+        "appFont": "Figtree, system-ui, sans-serif",
+        "fontFigtree": true,
+        "introOnlyCount": 0,
+        "isPill": true,
+        "nav": {
+          "display": "flex",
+          "flexDirection": "row",
+          "linkCount": 4
+        },
+        "navOrSidebarStale": false,
+        "pageTitle": "Plat terbaca, langkahnya terlihat.",
+        "sidebar": {
+          "borderRadius": "40px",
+          "display": "flex",
+          "height": 72,
+          "left": 143,
+          "position": "fixed",
+          "top": "10px",
+          "width": 1136
+        },
+        "staleTotal": 0,
+        "visibleStaleCount": 0,
+        "visibleStaleSample": []
+      }
+    },
+    {
+      "step": 1,
+      "label": "Beranda",
+      "delay_ms": 300,
+      "file": "01_beranda_300ms.png",
+      "diag": {
+        "appFont": "Figtree, system-ui, sans-serif",
+        "fontFigtree": true,
+        "introOnlyCount": 0,
+        "isPill": true,
+        "nav": {
+          "display": "flex",
+          "flexDirection": "row",
+          "linkCount": 4
+        },
+        "navOrSidebarStale": false,
+        "pageTitle": "Plat terbaca, langkahnya terlihat.",
+        "sidebar": {
+          "borderRadius": "40px",
+          "display": "flex",
+          "height": 72,
+          "left": 143,
+          "position": "fixed",
+          "top": "10px",
+          "width": 1136
+        },
+        "staleTotal": 0,
+        "visibleStaleCount": 0,
+        "visibleStaleSample": []
+      }
+    },
+    {
+      "step": 1,
+      "label": "Beranda",
+      "delay_ms": 1000,
+      "file": "01_beranda_1000ms.png",
+      "diag": {
+        "appFont": "Figtree, system-ui, sans-serif",
+        "fontFigtree": true,
+        "introOnlyCount": 0,
+        "isPill": true,
+        "nav": {
+          "display": "flex",
+          "flexDirection": "row",
+          "linkCount": 4
+        },
+        "navOrSidebarStale": false,
+        "pageTitle": "Plat terbaca, langkahnya terlihat.",
+        "sidebar": {
+          "borderRadius": "40px",
+          "display": "flex",
+          "height": 72,
+          "left": 143,
+          "position": "fixed",
+          "top": "10px",
+          "width": 1136
+        },
+        "staleTotal": 0,
+        "visibleStaleCount": 0,
+        "visibleStaleSample": []
+      }
+    },
+    {
+      "step": 2,
+      "label": "Baca Plat",
+      "delay_ms": 0,
+      "file": "02_baca_plat_0ms.png",
+      "diag": {
+        "appFont": "Figtree, system-ui, sans-serif",
+        "fontFigtree": true,
+        "introOnlyCount": 0,
+        "isPill": true,
+        "nav": {
+          "display": "flex",
+          "flexDirection": "row",
+          "linkCount": 4
+        },
+        "navOrSidebarStale": false,
+        "pageTitle": "Baca Plat",
+        "sidebar": {
+          "borderRadius": "40px",
+          "display": "flex",
+          "height": 72,
+          "left": 143,
+          "position": "fixed",
+          "top": "10px",
+          "width": 1136
+        },
+        "staleTotal": 0,
+        "visibleStaleCount": 0,
+        "visibleStaleSample": []
+      }
+    },
+    {
+      "step": 2,
+      "label": "Baca Plat",
+      "delay_ms": 100,
+      "file": "02_baca_plat_100ms.png",
+      "diag": {
+        "appFont": "Figtree, system-ui, sans-serif",
+        "fontFigtree": true,
+        "introOnlyCount": 0,
+        "isPill": true,
+        "nav": {
+          "display": "flex",
+          "flexDirection": "row",
+          "linkCount": 4
+        },
+        "navOrSidebarStale": false,
+        "pageTitle": "Baca Plat",
+        "sidebar": {
+          "borderRadius": "40px",
+          "display": "flex",
+          "height": 72,
+          "left": 143,
+          "position": "fixed",
+          "top": "10px",
+          "width": 1136
+        },
+        "staleTotal": 0,
+        "visibleStaleCount": 0,
+        "visibleStaleSample": []
+      }
+    },
+    {
+      "step": 2,
+      "label": "Baca Plat",
+      "delay_ms": 300,
+      "file": "02_baca_plat_300ms.png",
+      "diag": {
+        "appFont": "Figtree, system-ui, sans-serif",
+        "fontFigtree": true,
+        "introOnlyCount": 0,
+        "isPill": true,
+        "nav": {
+          "display": "flex",
+          "flexDirection": "row",
+          "linkCount": 4
+        },
+        "navOrSidebarStale": false,
+        "pageTitle": "Baca Plat",
+        "sidebar": {
+          "borderRadius": "40px",
+          "display": "flex",
+          "height": 72,
+          "left": 143,
+          "position": "fixed",
+          "top": "10px",
+          "width": 1136
+        },
+        "staleTotal": 0,
+        "visibleStaleCount": 0,
+        "visibleStaleSample": []
+      }
+    },
+    {
+      "step": 2,
+      "label": "Baca Plat",
+      "delay_ms": 1000,
+      "file": "02_baca_plat_1000ms.png",
+      "diag": {
+        "appFont": "Figtree, system-ui, sans-serif",
+        "fontFigtree": true,
+        "introOnlyCount": 0,
+        "isPill": true,
+        "nav": {
+          "display": "flex",
+          "flexDirection": "row",
+          "linkCount": 4
+        },
+        "navOrSidebarStale": false,
+        "pageTitle": "Baca Plat",
+        "sidebar": {
+          "borderRadius": "40px",
+          "display": "flex",
+          "height": 72,
+          "left": 143,
+          "position": "fixed",
+          "top": "10px",
+          "width": 1136
+        },
+        "staleTotal": 0,
+        "visibleStaleCount": 0,
+        "visibleStaleSample": []
+      }
+    },
+    {
+      "step": 3,
+      "label": "Evaluasi",
+      "delay_ms": 0,
+      "file": "03_evaluasi_0ms.png",
+      "diag": {
+        "appFont": "Figtree, system-ui, sans-serif",
+        "fontFigtree": true,
+        "introOnlyCount": 0,
+        "isPill": true,
+        "nav": {
+          "display": "flex",
+          "flexDirection": "row",
+          "linkCount": 4
+        },
+        "navOrSidebarStale": false,
+        "pageTitle": "Evaluasi",
+        "sidebar": {
+          "borderRadius": "40px",
+          "display": "flex",
+          "height": 72,
+          "left": 143,
+          "position": "fixed",
+          "top": "10px",
+          "width": 1136
+        },
+        "staleTotal": 0,
+        "visibleStaleCount": 0,
+        "visibleStaleSample": []
+      }
+    },
+    {
+      "step": 3,
+      "label": "Evaluasi",
+      "delay_ms": 100,
+      "file": "03_evaluasi_100ms.png",
+      "diag": {
+        "appFont": "Figtree, system-ui, sans-serif",
+        "fontFigtree": true,
+        "introOnlyCount": 0,
+        "isPill": true,
+        "nav": {
+          "display": "flex",
+          "flexDirection": "row",
+          "linkCount": 4
+        },
+        "navOrSidebarStale": false,
+        "pageTitle": "Evaluasi",
+        "sidebar": {
+          "borderRadius": "40px",
+          "display": "flex",
+          "height": 72,
+          "left": 143,
+          "position": "fixed",
+          "top": "10px",
+          "width": 1136
+        },
+        "staleTotal": 0,
+        "visibleStaleCount": 0,
+        "visibleStaleSample": []
+      }
+    },
+    {
+      "step": 3,
+      "label": "Evaluasi",
+      "delay_ms": 300,
+      "file": "03_evaluasi_300ms.png",
+      "diag": {
+        "appFont": "Figtree, system-ui, sans-serif",
+        "fontFigtree": true,
+        "introOnlyCount": 0,
+        "isPill": true,
+        "nav": {
+          "display": "flex",
+          "flexDirection": "row",
+          "linkCount": 4
+        },
+        "navOrSidebarStale": false,
+        "pageTitle": "Evaluasi",
+        "sidebar": {
+          "borderRadius": "40px",
+          "display": "flex",
+          "height": 72,
+          "left": 143,
+          "position": "fixed",
+          "top": "10px",
+          "width": 1136
+        },
+        "staleTotal": 0,
+        "visibleStaleCount": 0,
+        "visibleStaleSample": []
+      }
+    },
+    {
+      "step": 3,
+      "label": "Evaluasi",
+      "delay_ms": 1000,
+      "file": "03_evaluasi_1000ms.png",
+      "diag": {
+        "appFont": "Figtree, system-ui, sans-serif",
+        "fontFigtree": true,
+        "introOnlyCount": 0,
+        "isPill": true,
+        "nav": {
+          "display": "flex",
+          "flexDirection": "row",
+          "linkCount": 4
+        },
+        "navOrSidebarStale": false,
+        "pageTitle": "Evaluasi",
+        "sidebar": {
+          "borderRadius": "40px",
+          "display": "flex",
+          "height": 72,
+          "left": 143,
+          "position": "fixed",
+          "top": "10px",
+          "width": 1136
+        },
+        "staleTotal": 0,
+        "visibleStaleCount": 0,
+        "visibleStaleSample": []
+      }
+    },
+    {
+      "step": 4,
+      "label": "Dataset",
+      "delay_ms": 0,
+      "file": "04_dataset_0ms.png",
+      "diag": {
+        "appFont": "Figtree, system-ui, sans-serif",
+        "fontFigtree": true,
+        "introOnlyCount": 0,
+        "isPill": true,
+        "nav": {
+          "display": "flex",
+          "flexDirection": "row",
+          "linkCount": 4
+        },
+        "navOrSidebarStale": false,
+        "pageTitle": "Dataset",
+        "sidebar": {
+          "borderRadius": "40px",
+          "display": "flex",
+          "height": 72,
+          "left": 143,
+          "position": "fixed",
+          "top": "10px",
+          "width": 1136
+        },
+        "staleTotal": 0,
+        "visibleStaleCount": 0,
+        "visibleStaleSample": []
+      }
+    },
+    {
+      "step": 4,
+      "label": "Dataset",
+      "delay_ms": 100,
+      "file": "04_dataset_100ms.png",
+      "diag": {
+        "appFont": "Figtree, system-ui, sans-serif",
+        "fontFigtree": true,
+        "introOnlyCount": 0,
+        "isPill": true,
+        "nav": {
+          "display": "flex",
+          "flexDirection": "row",
+          "linkCount": 4
+        },
+        "navOrSidebarStale": false,
+        "pageTitle": "Dataset",
+        "sidebar": {
+          "borderRadius": "40px",
+          "display": "flex",
+          "height": 72,
+          "left": 143,
+          "position": "fixed",
+          "top": "10px",
+          "width": 1136
+        },
+        "staleTotal": 0,
+        "visibleStaleCount": 0,
+        "visibleStaleSample": []
+      }
+    },
+    {
+      "step": 4,
+      "label": "Dataset",
+      "delay_ms": 300,
+      "file": "04_dataset_300ms.png",
+      "diag": {
+        "appFont": "Figtree, system-ui, sans-serif",
+        "fontFigtree": true,
+        "introOnlyCount": 0,
+        "isPill": true,
+        "nav": {
+          "display": "flex",
+          "flexDirection": "row",
+          "linkCount": 4
+        },
+        "navOrSidebarStale": false,
+        "pageTitle": "Dataset",
+        "sidebar": {
+          "borderRadius": "40px",
+          "display": "flex",
+          "height": 72,
+          "left": 143,
+          "position": "fixed",
+          "top": "10px",
+          "width": 1136
+        },
+        "staleTotal": 0,
+        "visibleStaleCount": 0,
+        "visibleStaleSample": []
+      }
+    },
+    {
+      "step": 4,
+      "label": "Dataset",
+      "delay_ms": 1000,
+      "file": "04_dataset_1000ms.png",
+      "diag": {
+        "appFont": "Figtree, system-ui, sans-serif",
+        "fontFigtree": true,
+        "introOnlyCount": 0,
+        "isPill": true,
+        "nav": {
+          "display": "flex",
+          "flexDirection": "row",
+          "linkCount": 4
+        },
+        "navOrSidebarStale": false,
+        "pageTitle": "Dataset",
+        "sidebar": {
+          "borderRadius": "40px",
+          "display": "flex",
+          "height": 72,
+          "left": 143,
+          "position": "fixed",
+          "top": "10px",
+          "width": 1136
+        },
+        "staleTotal": 0,
+        "visibleStaleCount": 0,
+        "visibleStaleSample": []
+      }
+    }
+  ],
+  "ringkasan": {
+    "total_screenshot": 16,
+    "semua_pil_melayang": true,
+    "tidak_ada_sidebar_bawaan": true,
+    "tidak_ada_stale_terlihat": true,
+    "menu_tidak_stale": true,
+    "intro_tidak_terulang": true,
+    "font_termuat": true,
+    "judul_per_langkah": [
+      "Plat terbaca, langkahnya terlihat.",
+      "Baca Plat",
+      "Evaluasi",
+      "Dataset"
+    ],
+    "tidak_ada_sidebar_bawaan_piksel": true,
+    "menu_atas_terlihat_piksel": true
+  },
+  "pemeriksaan_piksel": [
+    {
+      "file": "01_beranda_0ms.png",
+      "size": "1422x748",
+      "left_bg_ratio": 1.0,
+      "left_white_ratio": 0.0,
+      "top_center_px": [
+        255,
+        255,
+        255
+      ],
+      "top_center_is_pill": true,
+      "left_is_background": true
+    },
+    {
+      "file": "01_beranda_1000ms.png",
+      "size": "1422x748",
+      "left_bg_ratio": 1.0,
+      "left_white_ratio": 0.0,
+      "top_center_px": [
+        255,
+        255,
+        255
+      ],
+      "top_center_is_pill": true,
+      "left_is_background": true
+    },
+    {
+      "file": "01_beranda_100ms.png",
+      "size": "1422x748",
+      "left_bg_ratio": 1.0,
+      "left_white_ratio": 0.0,
+      "top_center_px": [
+        255,
+        255,
+        255
+      ],
+      "top_center_is_pill": true,
+      "left_is_background": true
+    },
+    {
+      "file": "01_beranda_300ms.png",
+      "size": "1422x748",
+      "left_bg_ratio": 1.0,
+      "left_white_ratio": 0.0,
+      "top_center_px": [
+        255,
+        255,
+        255
+      ],
+      "top_center_is_pill": true,
+      "left_is_background": true
+    },
+    {
+      "file": "02_baca_plat_0ms.png",
+      "size": "1422x748",
+      "left_bg_ratio": 1.0,
+      "left_white_ratio": 0.0,
+      "top_center_px": [
+        255,
+        255,
+        255
+      ],
+      "top_center_is_pill": true,
+      "left_is_background": true
+    },
+    {
+      "file": "02_baca_plat_1000ms.png",
+      "size": "1422x748",
+      "left_bg_ratio": 1.0,
+      "left_white_ratio": 0.0,
+      "top_center_px": [
+        255,
+        255,
+        255
+      ],
+      "top_center_is_pill": true,
+      "left_is_background": true
+    },
+    {
+      "file": "02_baca_plat_100ms.png",
+      "size": "1422x748",
+      "left_bg_ratio": 1.0,
+      "left_white_ratio": 0.0,
+      "top_center_px": [
+        255,
+        255,
+        255
+      ],
+      "top_center_is_pill": true,
+      "left_is_background": true
+    },
+    {
+      "file": "02_baca_plat_300ms.png",
+      "size": "1422x748",
+      "left_bg_ratio": 1.0,
+      "left_white_ratio": 0.0,
+      "top_center_px": [
+        255,
+        255,
+        255
+      ],
+      "top_center_is_pill": true,
+      "left_is_background": true
+    },
+    {
+      "file": "03_evaluasi_0ms.png",
+      "size": "1422x748",
+      "left_bg_ratio": 1.0,
+      "left_white_ratio": 0.0,
+      "top_center_px": [
+        255,
+        255,
+        255
+      ],
+      "top_center_is_pill": true,
+      "left_is_background": true
+    },
+    {
+      "file": "03_evaluasi_1000ms.png",
+      "size": "1422x748",
+      "left_bg_ratio": 1.0,
+      "left_white_ratio": 0.0,
+      "top_center_px": [
+        255,
+        255,
+        255
+      ],
+      "top_center_is_pill": true,
+      "left_is_background": true
+    },
+    {
+      "file": "03_evaluasi_100ms.png",
+      "size": "1422x748",
+      "left_bg_ratio": 1.0,
+      "left_white_ratio": 0.0,
+      "top_center_px": [
+        255,
+        255,
+        255
+      ],
+      "top_center_is_pill": true,
+      "left_is_background": true
+    },
+    {
+      "file": "03_evaluasi_300ms.png",
+      "size": "1422x748",
+      "left_bg_ratio": 1.0,
+      "left_white_ratio": 0.0,
+      "top_center_px": [
+        255,
+        255,
+        255
+      ],
+      "top_center_is_pill": true,
+      "left_is_background": true
+    },
+    {
+      "file": "04_dataset_0ms.png",
+      "size": "1422x748",
+      "left_bg_ratio": 1.0,
+      "left_white_ratio": 0.0,
+      "top_center_px": [
+        255,
+        255,
+        255
+      ],
+      "top_center_is_pill": true,
+      "left_is_background": true
+    },
+    {
+      "file": "04_dataset_1000ms.png",
+      "size": "1422x748",
+      "left_bg_ratio": 1.0,
+      "left_white_ratio": 0.0,
+      "top_center_px": [
+        255,
+        255,
+        255
+      ],
+      "top_center_is_pill": true,
+      "left_is_background": true
+    },
+    {
+      "file": "04_dataset_100ms.png",
+      "size": "1422x748",
+      "left_bg_ratio": 1.0,
+      "left_white_ratio": 0.0,
+      "top_center_px": [
+        255,
+        255,
+        255
+      ],
+      "top_center_is_pill": true,
+      "left_is_background": true
+    },
+    {
+      "file": "04_dataset_300ms.png",
+      "size": "1422x748",
+      "left_bg_ratio": 1.0,
+      "left_white_ratio": 0.0,
+      "top_center_px": [
+        255,
+        255,
+        255
+      ],
+      "top_center_is_pill": true,
+      "left_is_background": true
+    }
+  ]
+}
