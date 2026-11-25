@@ -87,9 +87,9 @@ with st.container(border=True, key="kartu_evaluasi"):
             bool(st.session_state.get("acuan_terisi", False)),
         )
         st.caption(
-            "Unggah dan unduh CSV ada di sini. Teks plat diketik manual; "
-            "kotak berasal dari label YOLO dataset. Kolom kondisi dipakai "
-            "untuk mengelompokkan skenario."
+            "Isi kolom **Teks plat acuan** untuk citra yang ingin dinilai, lalu pilih "
+            "**Kondisi** bila diketahui. Nama citra dan kotak sudah disiapkan dari "
+            "dataset; Anda bisa mengganti CSV atau mengunduh hasilnya di bawah tabel."
         )
         unggah_acuan = st.file_uploader(
             "Ganti CSV acuan (opsional)",
@@ -123,7 +123,7 @@ with st.container(border=True, key="kartu_evaluasi"):
             reference_df,
             column_config={
                 "image_id": st.column_config.TextColumn("Citra", disabled=True),
-                "box": st.column_config.TextColumn("Kotak acuan (px)", disabled=True),
+                "box": None,
                 "text": st.column_config.TextColumn(
                     "Teks plat acuan",
                     help="Ketik manual dari citra; kosongkan bila belum dicek.",
@@ -328,7 +328,7 @@ with st.container(border=True, key="kartu_evaluasi"):
                                     "Nilai": f"{hasil.localization['presisi'] * 100:.0f}%",
                                 },
                                 {
-                                    "Metrik": "Recall",
+                                    "Metrik": "Daya ingat",
                                     "Nilai": f"{hasil.localization['recall'] * 100:.0f}%",
                                 },
                                 {

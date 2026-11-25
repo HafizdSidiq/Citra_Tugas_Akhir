@@ -38,11 +38,10 @@ Unggahan pengguna diproses di memori dan tidak ditulis ke disk. Rincian pemeriks
 ```text
 app.py                  Router st.navigation + header pil melayang
 pages/
-  0_Beranda.py          Hero simulasi 8 tahap, marquee, kartu bento
+  0_Beranda.py          Hero simulasi 8 tahap dan kartu bento
   1_Baca_Plat.py        Pilih foto → atur → hasil (satu halaman)
   2_Evaluasi.py         Wizard 4 tab: acuan, prediksi, hasil, varian
   3_Dataset.py          Sumber, lisensi, struktur, galeri malas
-  4_Uji_Widget.py       Halaman internal tersembunyi untuk uji kontras
 core/
   pipeline.py           Delapan tahap pengolahan citra
   ocr.py                Tesseract, whitelist, validasi plat
@@ -51,24 +50,24 @@ core/
   evaluation.py         Prediksi dari CSV atau pipeline untuk evaluasi
   tests/                23 tes pytest
 ui/
-  theme.css             Token Lukis, Unbounded/Figtree, kartu bulat, mode gelap
+  theme.css             Token Lukis, Unbounded/Figtree, kartu bulat, tema terang
   components.py         Komponen tampilan bersama + panggung iframe
 docs/
   referensi/lukis.html  Satu-satunya referensi gaya antarmuka
   acuan_ocr.csv         Template 197 kotak dari 100 citra (teks masih kosong)
   dataset_info.md       Metadata dan verifikasi dataset
-  screenshots/          Tangkapan layar terang dan gelap per halaman
+  screenshots/          Tangkapan layar tema terang per halaman
 requirements.txt
 packages.txt
 ```
 
 ## Tampilan
 
-Gaya antarmuka mengikuti `docs/referensi/lukis.html`: ungu `#6d3cff`, tosca `#00c4cc`, kuning `#ffd23f`, pink `#ff6b9d`, tinta `#14112b`, dan latar `#fbf9ff`. Judul memakai Unbounded, isi memakai Figtree. Kartu sangat bulat (26–30 px) bergantian antara putih, ungu, kuning, dan tosca tanpa garis dekoratif. Navigasi adalah pil melayang dengan logo berputar dan penanda menu aktif; toolbar bawaan Streamlit disembunyikan.
+Gaya antarmuka mengikuti `docs/referensi/lukis.html`: ungu `#6d3cff`, tosca `#00c4cc`, kuning `#ffd23f`, pink `#ff6b9d`, tinta `#14112b`, dan latar `#fbf9ff`. Judul memakai Unbounded, isi memakai Figtree. Kartu sangat bulat (26–30 px) bergantian antara putih, ungu, kuning, dan tosca tanpa garis dekoratif. Navigasi adalah pil melayang dengan logo gradien statis dan penanda menu aktif; toolbar bawaan Streamlit disembunyikan.
 
-Semua teks antarmuka berbahasa Indonesia dan menyebut aksinya, misalnya **Baca plat**. Tombol ungu naik 3 px dengan bayangan kuning dan sedikit miring saat dihover, lalu mengecil saat ditekan. Fokus keyboard memakai garis pink. `prefers-reduced-motion` mematikan marquee, logo, garis pindai, dan animasi masuk; `prefers-color-scheme: dark` mengganti token warna tanpa mengorbankan keterbacaan. JavaScript dan SVG hanya disuntik lewat `st.iframe`, bukan `st.markdown`.
+Aplikasi memakai tema terang saja agar tidak bertabrakan dengan preferensi gelap sistem operasi. Semua teks antarmuka berbahasa Indonesia dan menyebut aksinya, misalnya **Baca plat**. Tombol ungu naik 3 px dengan bayangan kuning dan sedikit miring saat dihover, lalu mengecil saat ditekan. Fokus keyboard memakai garis pink. `prefers-reduced-motion` mematikan garis pindai dan animasi masuk. JavaScript dan SVG hanya disuntik lewat `st.iframe`, bukan `st.markdown`.
 
-Panel ringkasan permanen sudah dihapus. Kartu ringkasan hanya muncul pada halaman dengan hasil nyata. Galeri dataset dan contoh Kaggle baru dimuat setelah tombol ditekan; pemrosesan OCR hanya berjalan setelah **Baca plat**. Halaman uji widget dibuka lewat `/uji-widget` untuk memeriksa kontras seluruh widget.
+Panel ringkasan permanen sudah dihapus. Kartu ringkasan hanya muncul pada halaman dengan hasil nyata. Galeri dataset dan contoh Kaggle baru dimuat setelah tombol ditekan; pemrosesan OCR hanya berjalan setelah **Baca plat**.
 
 ## Alur pengolahan
 
@@ -85,7 +84,7 @@ Panel ringkasan permanen sudah dihapus. Kartu ringkasan hanya muncul pada halama
 
 - Buka `docs/acuan_ocr.csv` di halaman **Evaluasi**, ketik teks plat acuan dan isi kolom `condition` (siang/malam/bayangan, tegak/miring/jauh, mobil/motor, clahe/tanpa_clahe, otsu/adaptif), lalu unduh CSV terisi.
 - Sediakan prediksi lewat tombol **Jalankan prediksi** atau unggah CSV prediksi dengan kolom `image_id,text,box,confidence`.
-- Metrik dihitung dengan IoU ≥ 0,5: precision, recall, F1, akurasi plat, akurasi per karakter, confusion matrix, ringkasan skenario, dan waktu rata-rata per tahap.
+- Metrik dihitung dengan IoU ≥ 0,5: presisi, daya ingat, F1, akurasi plat, akurasi per karakter, matriks kebingungan, ringkasan skenario, dan waktu rata-rata per tahap.
 - Split memakai seed 42 dengan `image_id` sebagai unit, sehingga tidak ada kebocoran antar-split. Angka hanya berlaku untuk baris uji yang dihitung; tidak ada klaim di luar data uji.
 - Bagian **Perbandingan varian** menjalankan CLAHE aktif/tanpa dan Otsu/adaptif pada citra yang sama.
 
@@ -105,4 +104,4 @@ python -m compileall -q app.py core ui pages
 
 ## Screenshot
 
-Tangkapan layar tiap halaman ada di akar `docs/screenshots/` (tema terang) serta di `docs/screenshots/light/` dan `docs/screenshots/dark/`. Animasi dinonaktifkan saat pengambilan dengan `prefers-reduced-motion`. Tangkapan lama dari desain sebelumnya sudah dihapus.
+Tangkapan layar tiap halaman ada di akar `docs/screenshots/` dan `docs/screenshots/light/` dengan tema terang. `docs/screenshots/beranda_preferensi_gelap.png` menunjukkan tampilan tetap terang saat browser meminta mode gelap. Animasi dinonaktifkan saat pengambilan dengan `prefers-reduced-motion`. Folder `docs/screenshots/dark/` sudah dihapus karena aplikasi tidak lagi menyediakan tema gelap.

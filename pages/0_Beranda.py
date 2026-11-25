@@ -1,4 +1,4 @@
-"""Beranda: hero simulasi tahap, marquee kondisi, dan kartu bento."""
+"""Beranda: hero simulasi tahap dan kartu bento."""
 
 from __future__ import annotations
 
@@ -10,7 +10,6 @@ from ui.components import (
     page_header,
     render_bento,
     render_hero_stage,
-    render_marquee,
 )
 
 bootstrap()
@@ -27,7 +26,6 @@ with st.container(border=True, key="kartu_beranda"):
         st.page_link(
             "pages/1_Baca_Plat.py",
             label="Baca plat",
-            icon="🚗",
         )
         st.caption(
             "Tahap pengolahan ditampilkan satu per satu agar hasil bisa diaudit, "
@@ -36,12 +34,6 @@ with st.container(border=True, key="kartu_beranda"):
 
     with kanan:
         render_hero_stage()
-        st.caption(
-            "Simulasi ilustratif delapan tahap. Bukan hasil OCR sungguhan; "
-            "buka Baca Plat untuk memproses foto Anda."
-        )
-
-render_marquee(["Siang", "Malam", "Miring", "Motor", "Mobil"])
 
 with st.container(border=True, key="kartu_bento"):
     st.subheader("Sekilas proyek")

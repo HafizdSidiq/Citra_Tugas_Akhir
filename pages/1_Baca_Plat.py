@@ -102,7 +102,7 @@ with st.container(border=True, key="kartu_baca"):
 
     with tab_unggah:
         unggahan = st.file_uploader(
-            "Foto kendaraan (JPG, PNG, WEBP)",
+            "Pilih berkas foto kendaraan (JPG, PNG, WEBP)",
             type=["jpg", "jpeg", "png", "webp"],
             key="unggahan_foto",
         )
@@ -110,15 +110,9 @@ with st.container(border=True, key="kartu_baca"):
             st.session_state["sumber_bytes"] = unggahan.getvalue()
             st.session_state["sumber_nama"] = unggahan.name
             st.session_state["sumber_jenis"] = "Unggah"
-            st.image(
-                st.session_state["sumber_bytes"],
-                caption=st.session_state["sumber_nama"],
-                width="stretch",
-            )
         else:
-            render_empty_state(
-                "Belum ada foto",
-                "Unggah foto kendaraan di sini atau pilih contoh pada tab sebelah.",
+            st.caption(
+                "Belum ada foto. Pilih berkas di area ini atau buka tab Contoh dataset."
             )
 
     with tab_contoh:
@@ -173,6 +167,21 @@ with st.container(border=True, key="kartu_baca"):
     sumber_nama = str(st.session_state.get("sumber_nama", ""))
     if sumber_bytes is not None:
         st.caption(f"Sumber aktif: **{sumber_nama}**")
+        pratinjau, _ruang = st.columns([1, 1])
+        with pratinjau:
+            st.image(sumber_bytes, caption=sumber_nama, width="stretch")
+
+    tombol_baca = st.button(
+        "Baca plat",
+        type="primary",
+        width="stretch",
+        disabled=sumber_bytes is None,
+        key="tombol_baca",
+    )
+    if sumber_bytes is not None:
+        st.caption(
+            "Tombol ini memproses foto di atas dengan pengaturan yang sedang aktif."
+        )
 
     # ----------------------------------------------------- 2. Atur
     st.subheader("2 · Atur")
@@ -188,13 +197,13 @@ with st.container(border=True, key="kartu_baca"):
     # ---------------------------------------------------- 3. Hasil
     st.subheader("3 · Hasil")
     st.caption(
-        "Tekan tombol di bawah untuk memproses citra. Hasil dengan citra dan "
-        "parameter yang sama disimpan sementara agar tidak dihitung ulang."
+        "Hasil muncul di sini setelah tombol Baca plat ditekan. Citra dan parameter "
+        "yang sama disimpan sementara agar tidak dihitung ulang."
     )
-    if st.button("Baca plat", type="primary", width="stretch"):
+    if tombol_baca:
         if sumber_bytes is None:
             render_failure_card(
-                "Belum ada citra yang dipilih. Unggah foto pada Langkah 1 atau "
+                "Belum ada citra yang dipilih. Pilih foto pada Langkah 1 atau "
                 "muat contoh dataset, lalu tekan Baca plat kembali."
             )
         else:

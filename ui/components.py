@@ -156,8 +156,7 @@ def render_scan_overlay() -> None:
         animation:sapu 900ms ease-in-out 1 both}
       @keyframes sapu{0%{transform:translateX(-110%);opacity:0}12%,88%{opacity:1}100%{transform:translateX(610%);opacity:0}}
       @keyframes gambar{to{stroke-dashoffset:0}}
-      @media(prefers-color-scheme:dark){.bingkai{background:#241f47}}
-      @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}
+            @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}
         .bingkai rect{stroke-dashoffset:0}.garis{display:none}}
     """
     st.iframe(
@@ -213,7 +212,6 @@ def render_copy_button(text: str, label: str = "Salin teks plat") -> None:
         "button:active{transform:scale(.96)}"
         "button:focus-visible{outline:3px solid #ff6b9d;outline-offset:3px}"
         "span{font-size:12px;margin-left:8px;color:#5d5878}"
-        "@media(prefers-color-scheme:dark){span{color:#b4aed1}}"
         "@media(prefers-reduced-motion:reduce){button:hover{transform:none;box-shadow:none}}"
     )
     st.iframe(
@@ -268,8 +266,24 @@ def parameter_widgets() -> PipelineParams:
     with st.expander("Parameter pengolahan", expanded=False):
         kiri, kanan = st.columns(2)
         with kiri:
-            low = st.slider("Ambang Canny bawah", 20, 120, 50, 5, key="canny_low")
-            high = st.slider("Ambang Canny atas", 60, 240, 150, 10, key="canny_high")
+            low = st.slider(
+                "Ambang Canny bawah",
+                20,
+                120,
+                50,
+                5,
+                key="canny_low",
+                help="Batas tepi lemah. Naikkan bila gambar terlalu banyak noise.",
+            )
+            high = st.slider(
+                "Ambang Canny atas",
+                60,
+                240,
+                150,
+                10,
+                key="canny_high",
+                help="Batas tepi kuat. Turunkan bila tepi plat mudah putus.",
+            )
             min_area = st.slider(
                 "Luas minimum (× citra)",
                 0.0002,
@@ -278,17 +292,39 @@ def parameter_widgets() -> PipelineParams:
                 0.0001,
                 format="%.4f",
                 key="min_area",
+                help="Kotak lebih kecil dari nilai ini diabaikan sebagai plat.",
             )
         with kanan:
-            aspect_min = st.slider("Rasio minimum", 1.4, 3.0, 1.6, 0.1, key="aspect_min")
-            aspect_max = st.slider("Rasio maksimum", 2.8, 4.2, 3.8, 0.1, key="aspect_max")
-            use_clahe = st.checkbox("Gunakan CLAHE", value=True, key="use_clahe")
+            aspect_min = st.slider(
+                "Rasio minimum",
+                1.4,
+                3.0,
+                1.6,
+                0.1,
+                key="aspect_min",
+                help="Rasio lebar terhadap tinggi terkecil yang diterima sebagai plat.",
+            )
+            aspect_max = st.slider(
+                "Rasio maksimum",
+                2.8,
+                4.2,
+                3.8,
+                0.1,
+                key="aspect_max",
+                help="Rasio lebar terhadap tinggi terbesar yang diterima sebagai plat.",
+            )
+            use_clahe = st.checkbox(
+                "Gunakan CLAHE",
+                value=True,
+                key="use_clahe",
+                help="Meningkatkan kontras pada foto gelap atau berkabut.",
+            )
             binarization = st.selectbox(
                 "Binerisasi",
                 ["auto", "otsu", "adaptive"],
                 index=0,
                 key="binarization",
-                help="auto mencoba keduanya dan memilih keyakinan OCR tertinggi.",
+                help="auto mencoba Otsu dan adaptif, lalu memilih keyakinan OCR tertinggi.",
             )
     high = max(high, low + 10)
     aspect_max = max(aspect_max, aspect_min + 0.2)
@@ -330,7 +366,7 @@ def performance_from_result(result: Any) -> list[tuple[str, str]]:
 
 
 # --------------------------------------------------------------------------
-# Beranda: panggung simulasi, marquee, dan bento (CSS murni, tanpa JS kecuali
+# Beranda: panggung simulasi dan bento (CSS murni, tanpa JS kecuali
 # iframe yang memang diisolasi dari markdown).
 # --------------------------------------------------------------------------
 TAHAP_SIMULASI = [
@@ -379,7 +415,6 @@ def render_hero_stage() -> None:
         background:#14112b;color:#fff;font-size:12px;font-weight:700}
       @keyframes putar{to{transform:translateX(-87.5%)}}
       @keyframes sapu{0%{transform:translateY(0);opacity:0}15%,85%{opacity:1}100%{transform:translateY(406px);opacity:0}}
-      @media(prefers-color-scheme:dark){.panggung{box-shadow:none}.plat i{background:var(--w)}}
       @media(prefers-reduced-motion:reduce){.jalur,.garis{animation:none!important}.garis{display:none}}
       @media(max-width:560px){.panggung{height:330px}.plat b{font-size:18px}.nomor{font-size:54px}}
     """
@@ -390,22 +425,6 @@ def render_hero_stage() -> None:
         '<span class="keterangan">Simulasi ilustratif · bukan hasil OCR sungguhan</span></div>',
         width="stretch",
         height=430,
-    )
-
-
-def render_marquee(items: Iterable[str]) -> None:
-    """Marquee chip bergerak, berhenti saat reduced motion."""
-    daftar = [html.escape(str(item)) for item in items]
-    isi = "".join(
-        f'<span class="chip-lukis" style="background:{warna}">{label}</span>'
-        for label, warna in zip(
-            daftar + daftar,
-            ["#ffd23f", "#00c4cc", "#ff6b9d", "#f1ecff", "#ffffff"] * 2,
-        )
-    )
-    st.markdown(
-        f'<div class="marquee" aria-hidden="true"><div class="marquee-track">{isi}</div></div>',
-        unsafe_allow_html=True,
     )
 
 
