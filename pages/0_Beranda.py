@@ -1,4 +1,4 @@
-"""Beranda: hero simulasi tahap dan kartu bento."""
+"""Beranda: identitas Plat Scanner, jendela pemindai, dan kartu bento."""
 
 from __future__ import annotations
 
@@ -6,9 +6,9 @@ import streamlit as st
 
 from ui.components import (
     mark_intro_done,
-    page_header,
     render_bento,
     render_hero_stage,
+    render_identity_header,
     render_logo,
 )
 
@@ -17,11 +17,7 @@ with st.container(border=True, key="kartu_beranda"):
 
     with kiri:
         render_logo(animated=True, ukuran=160)
-        page_header(
-            "Plat terbaca, langkahnya terlihat.",
-            "Baca plat nomor Indonesia dengan pengolahan citra klasik. Unggah foto, "
-            "atur parameter, dan periksa setiap tahapnya.",
-        )
+        render_identity_header()
         st.page_link(
             "pages/1_Baca_Plat.py",
             label="Baca plat",
@@ -41,7 +37,7 @@ with st.container(border=True, key="kartu_bento"):
             (
                 "8",
                 "Tahap pengolahan",
-                "Perkecil, abu-abu, CLAHE, Canny, kontur, binerisasi, segmentasi, OCR.",
+                "Resize, CLAHE, Canny, Kontur, Perspektif, Segmentasi, OCR, Hasil.",
                 "bento-ungu",
             ),
             (

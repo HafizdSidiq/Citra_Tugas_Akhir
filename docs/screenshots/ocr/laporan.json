@@ -1,0 +1,37 @@
+[
+  {
+    "kategori": "siang",
+    "gambar": "test002",
+    "hasil": "BO155ZNE | Keyakinan 35% Skor 82 1 plat terdeteksi",
+    "screenshot": "docs\\screenshots\\ocr\\siang_test002.png",
+    "error": []
+  },
+  {
+    "kategori": "malam",
+    "gambar": "test042",
+    "hasil": "Perlu diperiksa | Plat belum terbaca. Penyebabnya bisa plat terlalu kecil di bingkai, sudut bidik terlalu miring, atau silau pada permukaan plat. Dekatkan kamera dan bidik tegak, lalu coba lagi.",
+    "screenshot": "docs\\screenshots\\ocr\\malam_test042.png",
+    "error": []
+  },
+  {
+    "kategori": "miring",
+    "gambar": "test043",
+    "hasil": "WA558YY | Keyakinan 10% Skor 75 1 plat terdeteksi",
+    "screenshot": "docs\\screenshots\\ocr\\miring_test043.png",
+    "error": []
+  },
+  {
+    "kategori": "motor",
+    "gambar": "test010",
+    "hasil": "H1Y | Keyakinan 83% Skor 91 2 plat terdeteksi",
+    "screenshot": "docs\\screenshots\\ocr\\motor_test010.png",
+    "error": []
+  },
+  {
+    "kategori": "mobil",
+    "gambar": "test079",
+    "hasil": "A0N | Keyakinan 17% Skor 71 1 plat terdeteksi",
+    "screenshot": "docs\\screenshots\\ocr\\mobil_test079.png",
+    "error": []
+  }
+]

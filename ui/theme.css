@@ -60,7 +60,8 @@
 [data-testid="stToolbar"],
 [data-testid="stSidebarUserContent"],
 [data-testid="stSidebarCollapseButton"],
-[data-testid="stSidebarResizeHandle"] {
+[data-testid="stSidebarResizeHandle"],
+[data-testid="stSidebar"] [style*="col-resize"] {
   display: none !important;
 }
 
@@ -85,22 +86,41 @@
   background: rgba(255, 255, 255, 0.94) !important;
   backdrop-filter: blur(12px);
   box-shadow: 0 10px 34px -18px rgba(20, 17, 43, 0.45);
-  overflow: visible !important;
+  overflow: hidden !important;
   z-index: 40;
+}
+
+/* Isi sidebar Streamlit bawaan tersusun vertikal. Paksa satu baris agar
+   logo dan menu sejajar di dalam pil; tidak ada gulir horizontal/vertikal. */
+[data-testid="stSidebarContent"] {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  gap: 14px !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
 }
 
 /* Logo asli menggantikan kotak gradien dekoratif. */
 [data-testid="stSidebarHeader"] {
   display: flex !important;
   align-items: center;
+  justify-content: flex-start !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  height: auto !important;
   gap: 8px;
-  flex: 0 0 auto;
 }
 
+/* Wordmark statis menggantikan logo gradien berputar. */
 [data-testid="stSidebarHeader"]::after {
   content: "SCAN";
-  font: 800 18px "Unbounded", "Figtree", sans-serif;
-  letter-spacing: 0.06em;
+  font: 800 14px "Unbounded", "Figtree", sans-serif;
+  letter-spacing: 0.02em;
   color: var(--ink);
   white-space: nowrap;
 }
@@ -114,18 +134,30 @@
 
 [data-testid="stSidebarNav"] {
   display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
   align-items: center;
+  justify-content: flex-start !important;
   gap: 4px;
-  flex: 1 1 auto;
+  flex: 1 1 auto !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
 }
 
 [data-testid="stSidebarNav"] ul {
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   align-items: center;
+  justify-content: flex-start;
   gap: 4px;
   flex: 1 1 auto;
+  min-width: 0;
   margin: 0 !important;
   padding: 0 !important;
+  overflow: hidden !important;
 }
 
 [data-testid="stSidebarNav"] li {
@@ -134,6 +166,7 @@
 }
 
 [data-testid="stSidebarNav"] a {
+  flex: 0 0 auto;
   min-height: 44px;
   padding: 0 16px;
   display: inline-flex;
@@ -243,6 +276,56 @@
   margin: 0 0 18px !important;
   max-width: 54ch;
 }
+
+/* ---------- Identitas Plat Scanner di Beranda ---------- */
+.hero-identitas .eyebrow { color: var(--muted); }
+
+.hero-judul {
+  font-family: "Unbounded", "Figtree", sans-serif;
+  font-weight: 800;
+  font-size: clamp(46px, 6.2vw, 82px);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  margin: 0 0 12px !important;
+}
+
+.hero-judul span { display: block; }
+.hero-judul .baris-1 { color: var(--ink); }
+.hero-judul .baris-2 { color: var(--v); }
+
+.hero-identitas p.hero-tagline {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink) !important;
+  margin: 0 0 10px !important;
+}
+
+.hero-identitas p.hero-judul-resmi,
+.hero-identitas p.hero-penjelasan {
+  font-size: 14px;
+  color: var(--muted) !important;
+  margin: 0 0 6px !important;
+  max-width: 56ch;
+}
+
+.hero-pil {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 18px !important;
+}
+
+.hero-pil span {
+  padding: 6px 12px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.hero-pil .pil-opencv { background: var(--v); color: #ffffff; }
+.hero-pil .pil-tesseract { background: var(--t); color: var(--ink); }
+.hero-pil .pil-streamlit { background: var(--p); color: var(--ink); }
 
 .label-small {
   font-size: 13px;
@@ -834,6 +917,10 @@ summary:focus-visible {
   .st-key-kartu, .st-key-kartu-ungu, .st-key-kartu-kuning,
   .st-key-kartu-tosca, .st-key-kartu-putih { padding: 18px; border-radius: 24px; }
   .page-title { font-size: 26px !important; }
+  .hero-judul { font-size: 42px !important; }
+  .hero-identitas p.hero-tagline { font-size: 16px !important; }
+  .hero-identitas p.hero-judul-resmi,
+  .hero-identitas p.hero-penjelasan { font-size: 13px !important; }
   .result-text { font-size: 28px !important; }
   .ringkas-baris { flex-wrap: wrap; }
 }

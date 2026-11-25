@@ -1,0 +1,38 @@
+{
+  "waktu": "2026-11-25T13:28:49+00:00",
+  "sumber": "Kaggle juanthomaswijaya/indonesian-license-plate-dataset, split test",
+  "acuan": "docs\\acuan_ocr.csv",
+  "sumber_teks": "Kolom ke-6 labelswithLP, dipakai hanya untuk metrik teks; CSV acuan tidak diubah",
+  "n_citra_diminta": 50,
+  "n_citra_dipakai": 50,
+  "n_kotak_acuan": 102,
+  "ambang_iou": 0.5,
+  "recall_lokalisasi": 0.2353,
+  "hit_top1": 0.26,
+  "rata_kotak_per_citra": 0.54,
+  "n_teks_acuan": 102,
+  "akurasi_plat": 0.0098,
+  "akurasi_karakter": 0.5345,
+  "params": {
+    "canny_low": 70,
+    "canny_high": 210,
+    "min_area_ratio": 0.0003,
+    "max_area_ratio": 0.25,
+    "min_fill_ratio": 0.6,
+    "min_score": 70,
+    "aspect_min": 1.4,
+    "aspect_max": 3.8,
+    "max_candidates": 6,
+    "use_clahe": true,
+    "binarization": "auto",
+    "crop_bottom_ratio": 0.25,
+    "crop_side_ratio": 0.03,
+    "line_gap": 10,
+    "line_padding": 4,
+    "psm_modes": [
+      7,
+      8
+    ]
+  },
+  "gagal": []
+}

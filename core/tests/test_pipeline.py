@@ -9,6 +9,7 @@ import pytest
 from core.ocr import configure_tesseract, read_plate, validate_plate
 from core.pipeline import (
     MAX_WIDTH,
+    RECT_MIN_HEIGHT,
     PipelineParams,
     binarize_plate,
     detect_edges,
@@ -100,7 +101,9 @@ def test_binarisasi_menghasilkan_dua_varian() -> None:
     quad = find_plate_candidates(detect_edges(enhanced))[0]
     rectified = perspective_rectify(image, quad)
     otsu, adaptive = binarize_plate(rectified)
-    assert otsu.shape == adaptive.shape == (180, 600)
+    assert otsu.shape == adaptive.shape
+    assert otsu.shape[0] >= RECT_MIN_HEIGHT
+    assert 2.0 <= otsu.shape[1] / otsu.shape[0] <= 3.5
     assert otsu.mean() > 127 and adaptive.mean() > 127
 
 
@@ -139,7 +142,7 @@ def test_pipeline_tanpa_plat_memberi_pesan_perbaikan() -> None:
     result = process_image(blank, PipelineParams(min_area_ratio=0.02))
     assert result.plates == []
     assert result.text == ""
-    assert any("Coba turunkan ambang Canny" in w for w in result.warnings)
+    assert any("plat terlalu kecil" in w.lower() for w in result.warnings)
 
 
 def test_load_image_menerima_bytes_dan_pil() -> None:

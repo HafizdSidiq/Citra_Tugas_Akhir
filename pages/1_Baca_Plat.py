@@ -27,27 +27,33 @@ from ui.components import (
 
 PRESET = {
     "Standar": {
-        "canny_low": 50,
-        "canny_high": 150,
-        "min_area": 0.001,
-        "aspect_min": 1.6,
+        "canny_low": 70,
+        "canny_high": 210,
+        "min_area": 0.0003,
+        "max_area": 0.25,
+        "min_score": 55,
+        "aspect_min": 1.4,
         "aspect_max": 3.8,
         "use_clahe": True,
         "binarization": "auto",
     },
     "Foto malam": {
-        "canny_low": 30,
-        "canny_high": 100,
-        "min_area": 0.0005,
-        "aspect_min": 1.6,
+        "canny_low": 50,
+        "canny_high": 150,
+        "min_area": 0.0003,
+        "max_area": 0.25,
+        "min_score": 40,
+        "aspect_min": 1.4,
         "aspect_max": 3.8,
         "use_clahe": True,
         "binarization": "adaptive",
     },
     "Plat miring": {
-        "canny_low": 40,
-        "canny_high": 120,
-        "min_area": 0.0006,
+        "canny_low": 60,
+        "canny_high": 180,
+        "min_area": 0.0002,
+        "max_area": 0.35,
+        "min_score": 40,
         "aspect_min": 1.4,
         "aspect_max": 4.2,
         "use_clahe": True,
@@ -56,12 +62,13 @@ PRESET = {
 }
 
 TAHAPAN_TAMPIL = [
-    ("resize", "Perkecil citra", "Citra diperkecil maksimal 960 px dengan rasio tetap."),
+    ("resize", "Perkecil citra", "Deteksi memakai citra maksimal 960 px dengan rasio tetap."),
     ("grayscale", "Ubah ke abu-abu", "Warna dihapus agar kontras teks lebih mudah diukur."),
     ("enhanced", "Perkuat kontras", "CLAHE dan filter bilateral menaikkan kontras sekaligus menekan noise."),
-    ("edges", "Temukan tepi", "Canny menandai tepi, lalu closing menyambung bagian yang putus."),
-    ("contours", "Pilih kontur plat", "Kontur persegi panjang disaring memakai rasio dan luas."),
-    ("rectified_1", "Luruskan plat", "Sudut plat dikoreksi menjadi persegi panjang tetap."),
+    ("edges", "Temukan tepi", "Dua ambang Canny digabung tanpa closing agar tepi plat tidak melebur."),
+    ("contours", "Pilih kontur plat", "Kontur disaring memakai rasio, luas minimum/maksimum, dan keterisian."),
+    ("rectified_1", "Luruskan plat", "Quad dari deteksi diskalakan ke citra asli lalu diluruskan."),
+    ("ocr_crop_1", "Pangkas plat", "Pinggiran dan baris bawah dibuang sebelum OCR."),
     ("otsu_1", "Binerisasi", "Plat diubah ke hitam putih dengan Otsu atau ambang adaptif."),
     ("characters_1", "Segmentasi karakter", "Karakter dipisahkan dari kiri ke kanan sebelum dibaca OCR."),
 ]
@@ -235,12 +242,16 @@ with st.container(border=True, key="kartu_baca"):
         )
     else:
         if result.text:
-            render_plate_headline(result.text, result.confidence, len(result.plates))
+            utama = result.plates[0]
+            render_plate_headline(
+                result.text, result.confidence, len(result.plates), skor=utama.score
+            )
             render_copy_button(result.text)
         else:
             render_failure_card(
-                "Teks plat belum terbaca. Coba foto yang lebih dekat dan tajam, "
-                "atau sesuaikan parameter pada Langkah 2."
+                "Plat belum terbaca. Penyebabnya bisa plat terlalu kecil di bingkai, "
+                "sudut bidik terlalu miring, atau silau pada permukaan plat. Dekatkan "
+                "kamera dan bidik tegak, lalu coba lagi."
             )
 
         render_image_card(
@@ -252,23 +263,30 @@ with st.container(border=True, key="kartu_baca"):
         for amaran in result.warnings:
             render_failure_card(_terjemah_pesan(amaran))
 
-        if result.plates:
-            baris = [
-                {
-                    "Plat": plate.index,
-                    "Teks": plate.text or "—",
-                    "Keyakinan (%)": plate.confidence,
-                    "Pola valid": "Ya" if plate.valid_pattern else "Tidak",
-                    "Binerisasi": plate.threshold_used,
-                    "Karakter": len(plate.char_boxes),
-                }
-                for plate in result.plates
-            ]
-            st.dataframe(pd.DataFrame(baris), hide_index=True, width="stretch")
+        if len(result.plates) > 1:
+            with st.expander("Kandidat lain", expanded=False):
+                baris = [
+                    {
+                        "Plat": plate.index,
+                        "Teks": plate.text or "—",
+                        "Skor": plate.score,
+                        "Keyakinan (%)": plate.confidence,
+                        "Pola valid": "Ya" if plate.valid_pattern else "Tidak",
+                        "PSM": plate.psm,
+                        "Binerisasi": plate.threshold_used,
+                        "Karakter": len(plate.char_boxes),
+                    }
+                    for plate in result.plates[1:]
+                ]
+                st.dataframe(pd.DataFrame(baris), hide_index=True, width="stretch")
+                st.caption(
+                    "Hanya kandidat utama dan satu alternatif dengan skor terdekat "
+                    "yang digambar pada citra di atas."
+                )
 
         tab_tahapan, tab_waktu = st.tabs(["Tahapan", "Waktu"])
         with tab_tahapan:
-            st.caption("Delapan tahap pengolahan, masing-masing satu kalimat penjelas.")
+            st.caption("Sembilan tahap pengolahan, masing-masing satu kalimat penjelas.")
             tersedia = {
                 kunci: gambar
                 for kunci, gambar in result.stages.items()

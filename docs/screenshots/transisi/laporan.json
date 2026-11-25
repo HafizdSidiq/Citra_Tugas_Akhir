@@ -2,16 +2,20 @@
   "url": "http://localhost:8502/",
   "baseline": {
     "appFont": "Figtree, system-ui, sans-serif",
+    "contentFlexDirection": "row",
     "fontFigtree": true,
     "introOnlyCount": 1,
     "isPill": true,
     "nav": {
       "display": "flex",
       "flexDirection": "row",
-      "linkCount": 4
+      "linkCount": 4,
+      "overflowX": "hidden"
     },
     "navOrSidebarStale": false,
-    "pageTitle": "Plat terbaca, langkahnya terlihat.",
+    "navbarBisaScroll": false,
+    "navbarSearah": true,
+    "pageTitle": "PLATSCANNER",
     "sidebar": {
       "borderRadius": "40px",
       "display": "flex",
@@ -23,26 +27,32 @@
     },
     "staleTotal": 0,
     "visibleStaleCount": 0,
-    "visibleStaleSample": []
+    "visibleStaleSample": [],
+    "wordmark": "\"Plat Scanner\""
   },
   "screenshots": [
     {
       "step": 1,
       "label": "Beranda",
       "delay_ms": 0,
+      "actual_ms": 0,
       "file": "01_beranda_0ms.png",
       "diag": {
         "appFont": "Figtree, system-ui, sans-serif",
+        "contentFlexDirection": "row",
         "fontFigtree": true,
         "introOnlyCount": 0,
         "isPill": true,
         "nav": {
           "display": "flex",
           "flexDirection": "row",
-          "linkCount": 4
+          "linkCount": 4,
+          "overflowX": "hidden"
         },
         "navOrSidebarStale": false,
-        "pageTitle": "Plat terbaca, langkahnya terlihat.",
+        "navbarBisaScroll": false,
+        "navbarSearah": true,
+        "pageTitle": "PLATSCANNER",
         "sidebar": {
           "borderRadius": "40px",
           "display": "flex",
@@ -54,26 +64,32 @@
         },
         "staleTotal": 0,
         "visibleStaleCount": 0,
-        "visibleStaleSample": []
+        "visibleStaleSample": [],
+        "wordmark": "\"Plat Scanner\""
       }
     },
     {
       "step": 1,
       "label": "Beranda",
       "delay_ms": 100,
+      "actual_ms": 267,
       "file": "01_beranda_100ms.png",
       "diag": {
         "appFont": "Figtree, system-ui, sans-serif",
+        "contentFlexDirection": "row",
         "fontFigtree": true,
         "introOnlyCount": 0,
         "isPill": true,
         "nav": {
           "display": "flex",
           "flexDirection": "row",
-          "linkCount": 4
+          "linkCount": 4,
+          "overflowX": "hidden"
         },
         "navOrSidebarStale": false,
-        "pageTitle": "Plat terbaca, langkahnya terlihat.",
+        "navbarBisaScroll": false,
+        "navbarSearah": true,
+        "pageTitle": "PLATSCANNER",
         "sidebar": {
           "borderRadius": "40px",
           "display": "flex",
@@ -85,26 +101,32 @@
         },
         "staleTotal": 0,
         "visibleStaleCount": 0,
-        "visibleStaleSample": []
+        "visibleStaleSample": [],
+        "wordmark": "\"Plat Scanner\""
       }
     },
     {
       "step": 1,
       "label": "Beranda",
       "delay_ms": 300,
+      "actual_ms": 453,
       "file": "01_beranda_300ms.png",
       "diag": {
         "appFont": "Figtree, system-ui, sans-serif",
+        "contentFlexDirection": "row",
         "fontFigtree": true,
         "introOnlyCount": 0,
         "isPill": true,
         "nav": {
           "display": "flex",
           "flexDirection": "row",
-          "linkCount": 4
+          "linkCount": 4,
+          "overflowX": "hidden"
         },
         "navOrSidebarStale": false,
-        "pageTitle": "Plat terbaca, langkahnya terlihat.",
+        "navbarBisaScroll": false,
+        "navbarSearah": true,
+        "pageTitle": "PLATSCANNER",
         "sidebar": {
           "borderRadius": "40px",
           "display": "flex",
@@ -116,26 +138,32 @@
         },
         "staleTotal": 0,
         "visibleStaleCount": 0,
-        "visibleStaleSample": []
+        "visibleStaleSample": [],
+        "wordmark": "\"Plat Scanner\""
       }
     },
     {
       "step": 1,
       "label": "Beranda",
       "delay_ms": 1000,
+      "actual_ms": 1000,
       "file": "01_beranda_1000ms.png",
       "diag": {
         "appFont": "Figtree, system-ui, sans-serif",
+        "contentFlexDirection": "row",
         "fontFigtree": true,
         "introOnlyCount": 0,
         "isPill": true,
         "nav": {
           "display": "flex",
           "flexDirection": "row",
-          "linkCount": 4
+          "linkCount": 4,
+          "overflowX": "hidden"
         },
         "navOrSidebarStale": false,
-        "pageTitle": "Plat terbaca, langkahnya terlihat.",
+        "navbarBisaScroll": false,
+        "navbarSearah": true,
+        "pageTitle": "PLATSCANNER",
         "sidebar": {
           "borderRadius": "40px",
           "display": "flex",
@@ -147,25 +175,31 @@
         },
         "staleTotal": 0,
         "visibleStaleCount": 0,
-        "visibleStaleSample": []
+        "visibleStaleSample": [],
+        "wordmark": "\"Plat Scanner\""
       }
     },
     {
       "step": 2,
       "label": "Baca Plat",
       "delay_ms": 0,
+      "actual_ms": 0,
       "file": "02_baca_plat_0ms.png",
       "diag": {
         "appFont": "Figtree, system-ui, sans-serif",
+        "contentFlexDirection": "row",
         "fontFigtree": true,
         "introOnlyCount": 0,
         "isPill": true,
         "nav": {
           "display": "flex",
           "flexDirection": "row",
-          "linkCount": 4
+          "linkCount": 4,
+          "overflowX": "hidden"
         },
         "navOrSidebarStale": false,
+        "navbarBisaScroll": false,
+        "navbarSearah": true,
         "pageTitle": "Baca Plat",
         "sidebar": {
           "borderRadius": "40px",
@@ -178,25 +212,31 @@
         },
         "staleTotal": 0,
         "visibleStaleCount": 0,
-        "visibleStaleSample": []
+        "visibleStaleSample": [],
+        "wordmark": "\"Plat Scanner\""
       }
     },
     {
       "step": 2,
       "label": "Baca Plat",
       "delay_ms": 100,
+      "actual_ms": 276,
       "file": "02_baca_plat_100ms.png",
       "diag": {
         "appFont": "Figtree, system-ui, sans-serif",
+        "contentFlexDirection": "row",
         "fontFigtree": true,
         "introOnlyCount": 0,
         "isPill": true,
         "nav": {
           "display": "flex",
           "flexDirection": "row",
-          "linkCount": 4
+          "linkCount": 4,
+          "overflowX": "hidden"
         },
         "navOrSidebarStale": false,
+        "navbarBisaScroll": false,
+        "navbarSearah": true,
         "pageTitle": "Baca Plat",
         "sidebar": {
           "borderRadius": "40px",
@@ -209,25 +249,31 @@
         },
         "staleTotal": 0,
         "visibleStaleCount": 0,
-        "visibleStaleSample": []
+        "visibleStaleSample": [],
+        "wordmark": "\"Plat Scanner\""
       }
     },
     {
       "step": 2,
       "label": "Baca Plat",
       "delay_ms": 300,
+      "actual_ms": 690,
       "file": "02_baca_plat_300ms.png",
       "diag": {
         "appFont": "Figtree, system-ui, sans-serif",
+        "contentFlexDirection": "row",
         "fontFigtree": true,
         "introOnlyCount": 0,
         "isPill": true,
         "nav": {
           "display": "flex",
           "flexDirection": "row",
-          "linkCount": 4
+          "linkCount": 4,
+          "overflowX": "hidden"
         },
         "navOrSidebarStale": false,
+        "navbarBisaScroll": false,
+        "navbarSearah": true,
         "pageTitle": "Baca Plat",
         "sidebar": {
           "borderRadius": "40px",
@@ -240,25 +286,31 @@
         },
         "staleTotal": 0,
         "visibleStaleCount": 0,
-        "visibleStaleSample": []
+        "visibleStaleSample": [],
+        "wordmark": "\"Plat Scanner\""
       }
     },
     {
       "step": 2,
       "label": "Baca Plat",
       "delay_ms": 1000,
+      "actual_ms": 1001,
       "file": "02_baca_plat_1000ms.png",
       "diag": {
         "appFont": "Figtree, system-ui, sans-serif",
+        "contentFlexDirection": "row",
         "fontFigtree": true,
         "introOnlyCount": 0,
         "isPill": true,
         "nav": {
           "display": "flex",
           "flexDirection": "row",
-          "linkCount": 4
+          "linkCount": 4,
+          "overflowX": "hidden"
         },
         "navOrSidebarStale": false,
+        "navbarBisaScroll": false,
+        "navbarSearah": true,
         "pageTitle": "Baca Plat",
         "sidebar": {
           "borderRadius": "40px",
@@ -271,25 +323,31 @@
         },
         "staleTotal": 0,
         "visibleStaleCount": 0,
-        "visibleStaleSample": []
+        "visibleStaleSample": [],
+        "wordmark": "\"Plat Scanner\""
       }
     },
     {
       "step": 3,
       "label": "Evaluasi",
       "delay_ms": 0,
+      "actual_ms": 0,
       "file": "03_evaluasi_0ms.png",
       "diag": {
         "appFont": "Figtree, system-ui, sans-serif",
+        "contentFlexDirection": "row",
         "fontFigtree": true,
         "introOnlyCount": 0,
         "isPill": true,
         "nav": {
           "display": "flex",
           "flexDirection": "row",
-          "linkCount": 4
+          "linkCount": 4,
+          "overflowX": "hidden"
         },
         "navOrSidebarStale": false,
+        "navbarBisaScroll": false,
+        "navbarSearah": true,
         "pageTitle": "Evaluasi",
         "sidebar": {
           "borderRadius": "40px",
@@ -302,25 +360,31 @@
         },
         "staleTotal": 0,
         "visibleStaleCount": 0,
-        "visibleStaleSample": []
+        "visibleStaleSample": [],
+        "wordmark": "\"Plat Scanner\""
       }
     },
     {
       "step": 3,
       "label": "Evaluasi",
       "delay_ms": 100,
+      "actual_ms": 273,
       "file": "03_evaluasi_100ms.png",
       "diag": {
         "appFont": "Figtree, system-ui, sans-serif",
+        "contentFlexDirection": "row",
         "fontFigtree": true,
         "introOnlyCount": 0,
         "isPill": true,
         "nav": {
           "display": "flex",
           "flexDirection": "row",
-          "linkCount": 4
+          "linkCount": 4,
+          "overflowX": "hidden"
         },
         "navOrSidebarStale": false,
+        "navbarBisaScroll": false,
+        "navbarSearah": true,
         "pageTitle": "Evaluasi",
         "sidebar": {
           "borderRadius": "40px",
@@ -333,25 +397,31 @@
         },
         "staleTotal": 0,
         "visibleStaleCount": 0,
-        "visibleStaleSample": []
+        "visibleStaleSample": [],
+        "wordmark": "\"Plat Scanner\""
       }
     },
     {
       "step": 3,
       "label": "Evaluasi",
       "delay_ms": 300,
+      "actual_ms": 680,
       "file": "03_evaluasi_300ms.png",
       "diag": {
         "appFont": "Figtree, system-ui, sans-serif",
+        "contentFlexDirection": "row",
         "fontFigtree": true,
         "introOnlyCount": 0,
         "isPill": true,
         "nav": {
           "display": "flex",
           "flexDirection": "row",
-          "linkCount": 4
+          "linkCount": 4,
+          "overflowX": "hidden"
         },
         "navOrSidebarStale": false,
+        "navbarBisaScroll": false,
+        "navbarSearah": true,
         "pageTitle": "Evaluasi",
         "sidebar": {
           "borderRadius": "40px",
@@ -364,25 +434,31 @@
         },
         "staleTotal": 0,
         "visibleStaleCount": 0,
-        "visibleStaleSample": []
+        "visibleStaleSample": [],
+        "wordmark": "\"Plat Scanner\""
       }
     },
     {
       "step": 3,
       "label": "Evaluasi",
       "delay_ms": 1000,
+      "actual_ms": 1001,
       "file": "03_evaluasi_1000ms.png",
       "diag": {
         "appFont": "Figtree, system-ui, sans-serif",
+        "contentFlexDirection": "row",
         "fontFigtree": true,
         "introOnlyCount": 0,
         "isPill": true,
         "nav": {
           "display": "flex",
           "flexDirection": "row",
-          "linkCount": 4
+          "linkCount": 4,
+          "overflowX": "hidden"
         },
         "navOrSidebarStale": false,
+        "navbarBisaScroll": false,
+        "navbarSearah": true,
         "pageTitle": "Evaluasi",
         "sidebar": {
           "borderRadius": "40px",
@@ -395,25 +471,31 @@
         },
         "staleTotal": 0,
         "visibleStaleCount": 0,
-        "visibleStaleSample": []
+        "visibleStaleSample": [],
+        "wordmark": "\"Plat Scanner\""
       }
     },
     {
       "step": 4,
       "label": "Dataset",
       "delay_ms": 0,
+      "actual_ms": 0,
       "file": "04_dataset_0ms.png",
       "diag": {
         "appFont": "Figtree, system-ui, sans-serif",
+        "contentFlexDirection": "row",
         "fontFigtree": true,
         "introOnlyCount": 0,
         "isPill": true,
         "nav": {
           "display": "flex",
           "flexDirection": "row",
-          "linkCount": 4
+          "linkCount": 4,
+          "overflowX": "hidden"
         },
         "navOrSidebarStale": false,
+        "navbarBisaScroll": false,
+        "navbarSearah": true,
         "pageTitle": "Dataset",
         "sidebar": {
           "borderRadius": "40px",
@@ -426,25 +508,31 @@
         },
         "staleTotal": 0,
         "visibleStaleCount": 0,
-        "visibleStaleSample": []
+        "visibleStaleSample": [],
+        "wordmark": "\"Plat Scanner\""
       }
     },
     {
       "step": 4,
       "label": "Dataset",
       "delay_ms": 100,
+      "actual_ms": 447,
       "file": "04_dataset_100ms.png",
       "diag": {
         "appFont": "Figtree, system-ui, sans-serif",
+        "contentFlexDirection": "row",
         "fontFigtree": true,
         "introOnlyCount": 0,
         "isPill": true,
         "nav": {
           "display": "flex",
           "flexDirection": "row",
-          "linkCount": 4
+          "linkCount": 4,
+          "overflowX": "hidden"
         },
         "navOrSidebarStale": false,
+        "navbarBisaScroll": false,
+        "navbarSearah": true,
         "pageTitle": "Dataset",
         "sidebar": {
           "borderRadius": "40px",
@@ -457,25 +545,31 @@
         },
         "staleTotal": 0,
         "visibleStaleCount": 0,
-        "visibleStaleSample": []
+        "visibleStaleSample": [],
+        "wordmark": "\"Plat Scanner\""
       }
     },
     {
       "step": 4,
       "label": "Dataset",
       "delay_ms": 300,
+      "actual_ms": 1255,
       "file": "04_dataset_300ms.png",
       "diag": {
         "appFont": "Figtree, system-ui, sans-serif",
+        "contentFlexDirection": "row",
         "fontFigtree": true,
         "introOnlyCount": 0,
         "isPill": true,
         "nav": {
           "display": "flex",
           "flexDirection": "row",
-          "linkCount": 4
+          "linkCount": 4,
+          "overflowX": "hidden"
         },
         "navOrSidebarStale": false,
+        "navbarBisaScroll": false,
+        "navbarSearah": true,
         "pageTitle": "Dataset",
         "sidebar": {
           "borderRadius": "40px",
@@ -488,25 +582,31 @@
         },
         "staleTotal": 0,
         "visibleStaleCount": 0,
-        "visibleStaleSample": []
+        "visibleStaleSample": [],
+        "wordmark": "\"Plat Scanner\""
       }
     },
     {
       "step": 4,
       "label": "Dataset",
       "delay_ms": 1000,
+      "actual_ms": 1440,
       "file": "04_dataset_1000ms.png",
       "diag": {
         "appFont": "Figtree, system-ui, sans-serif",
+        "contentFlexDirection": "row",
         "fontFigtree": true,
         "introOnlyCount": 0,
         "isPill": true,
         "nav": {
           "display": "flex",
           "flexDirection": "row",
-          "linkCount": 4
+          "linkCount": 4,
+          "overflowX": "hidden"
         },
         "navOrSidebarStale": false,
+        "navbarBisaScroll": false,
+        "navbarSearah": true,
         "pageTitle": "Dataset",
         "sidebar": {
           "borderRadius": "40px",
@@ -519,23 +619,32 @@
         },
         "staleTotal": 0,
         "visibleStaleCount": 0,
-        "visibleStaleSample": []
+        "visibleStaleSample": [],
+        "wordmark": "\"Plat Scanner\""
       }
     }
   ],
   "ringkasan": {
     "total_screenshot": 16,
     "semua_pil_melayang": true,
+    "navbar_searah_satu_baris": true,
+    "navbar_tidak_bisa_scroll": true,
     "tidak_ada_sidebar_bawaan": true,
     "tidak_ada_stale_terlihat": true,
     "menu_tidak_stale": true,
     "intro_tidak_terulang": true,
     "font_termuat": true,
     "judul_per_langkah": [
-      "Plat terbaca, langkahnya terlihat.",
+      "PLATSCANNER",
       "Baca Plat",
       "Evaluasi",
       "Dataset"
+    ],
+    "waktu_aktual_1000ms": [
+      1000,
+      1001,
+      1001,
+      1440
     ],
     "tidak_ada_sidebar_bawaan_piksel": true,
     "menu_atas_terlihat_piksel": true

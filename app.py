@@ -17,7 +17,7 @@ from ui.components import inject_theme
 LOGO_DIR = Path(__file__).resolve().parent / "assets" / "logo"
 
 st.set_page_config(
-    page_title="Plat Nomor",
+    page_title="Plat Scanner",
     page_icon=str(LOGO_DIR / "favicon.png"),
     layout="wide",
 )
@@ -30,6 +30,7 @@ if "intro_done" not in st.session_state:
 # sehingga menu pil melayang dan latar tidak pernah kembali ke gaya bawaan.
 inject_theme()
 
+# Logo statis di header sidebar, lengkap dengan favicon sebagai ikon pendamping.
 st.logo(
     str(LOGO_DIR / "logo-utama.svg"),
     icon_image=str(LOGO_DIR / "favicon.png"),

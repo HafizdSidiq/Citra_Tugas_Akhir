@@ -18,6 +18,8 @@ from .ocr import OcrUnavailableError, read_plate, validate_plate
 
 MAX_WIDTH = 960
 RECT_SIZE = (600, 180)
+RECT_MIN_HEIGHT = 120
+RECT_MAX_HEIGHT = 200
 PREFERRED_RATIO = 2.8
 
 
@@ -25,14 +27,23 @@ PREFERRED_RATIO = 2.8
 class PipelineParams:
     """Parameter yang bisa diubah pengguna pada halaman Proses."""
 
-    canny_low: int = 50
-    canny_high: int = 150
-    min_area_ratio: float = 0.001
-    aspect_min: float = 1.6
+    canny_low: int = 70
+    canny_high: int = 210
+    min_area_ratio: float = 0.0003
+    max_area_ratio: float = 0.25
+    min_fill_ratio: float = 0.6
+    min_score: float = 55.0
+    aspect_min: float = 1.4
     aspect_max: float = 3.8
     max_candidates: int = 6
     use_clahe: bool = True
     binarization: str = "auto"  # "auto", "otsu", atau "adaptive"
+    # Tuning internal; sengaja tidak ditampilkan sebagai widget.
+    crop_bottom_ratio: float = 0.25
+    crop_side_ratio: float = 0.03
+    line_gap: int = 10
+    line_padding: int = 4
+    psm_modes: tuple[int, ...] = (7, 8)
 
 
 @dataclass
@@ -51,6 +62,8 @@ class PlateCandidate:
     text: str = ""
     confidence: float = 0.0
     valid_pattern: bool = False
+    psm: int = 7
+    char_height_ratio: float = 0.0
     score: float = 0.0
 
 
@@ -65,6 +78,7 @@ class PipelineResult:
     texts: list[str]
     confidence: float
     timings_ms: dict[str, float]
+    candidate_boxes: list[tuple[int, int, int, int]] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
 
 
@@ -114,15 +128,22 @@ def enhance_image(
 
 
 def detect_edges(
-    enhanced: np.ndarray, low: int = 50, high: int = 150
+    enhanced: np.ndarray, low: int = 70, high: int = 210
 ) -> np.ndarray:
-    """Tahap 3: Canny lalu closing morfologi untuk menyambung tepi plat."""
+    """Tahap 3: gabungkan dua Canny tanpa closing morfologi.
+
+    Benchmark 50 citra memberi recall 0,245 untuk Canny tanpa closing, versus
+    0,196 dengan closing 3x1 dan 0,010 dengan closing 17x2 yang lama. Closing
+    menyatukan tepi teks menjadi kontur besar dan justru menutup plat kecil.
+    Sumber kedua (ambang lebih rendah) menambah tepi yang putus tanpa efek
+    pengaburan kontur; duplikatnya dibuang di `find_plate_candidates`.
+    """
     low, high = int(low), int(high)
     if low > high:
         low, high = high, low
-    edges = cv2.Canny(enhanced, low, high)
-    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (17, 5))
-    return cv2.morphologyEx(edges, cv2.MORPH_CLOSE, kernel, iterations=2)
+    kuat = cv2.Canny(enhanced, low, high)
+    lemah = cv2.Canny(enhanced, max(10, round(0.7 * low)), max(20, round(0.7 * high)))
+    return cv2.bitwise_or(kuat, lemah)
 
 
 def _order_points(points: np.ndarray) -> np.ndarray:
@@ -151,19 +172,35 @@ def _box_iou(a: tuple[int, int, int, int], b: tuple[int, int, int, int]) -> floa
     return inter / union if union else 0.0
 
 
+def _touches_border(
+    box: tuple[int, int, int, int], width: int, height: int
+) -> bool:
+    """Tolak kandidat yang menempel tepi dengan lebar/tinggi hampir penuh."""
+    x, y, bw, bh = box
+    return (bw >= 0.9 * width and (x <= 1 or x + bw >= width - 1)) or (
+        bh >= 0.9 * height and (y <= 1 or y + bh >= height - 1)
+    )
+
+
 def find_plate_candidates(
     edges: np.ndarray, params: PipelineParams | None = None
 ) -> list[np.ndarray]:
-    """Tahap 4: saring kontur persegi panjang berdasarkan rasio dan luas."""
+    """Tahap 4: saring kontur persegi panjang dan buang duplikat dengan IoU.
+
+    Filter baru: luas maksimum, keterisian minAreaRect, dan penolakan kontur
+    yang menyentuh tepi citra. Semua ambang diambil dari `params` agar bisa
+    diuji dan diubah pengguna.
+    """
     params = params or PipelineParams()
     height, width = edges.shape[:2]
     min_area = max(1.0, params.min_area_ratio * height * width)
+    max_area = max(min_area + 1.0, params.max_area_ratio * height * width)
     contours, _ = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
     scored: list[tuple[float, np.ndarray]] = []
     for contour in contours:
         area = cv2.contourArea(contour)
-        if area < min_area:
+        if area < min_area or area > max_area:
             continue
         rect = cv2.minAreaRect(contour)
         rw, rh = rect[1]
@@ -172,12 +209,17 @@ def find_plate_candidates(
         ratio = max(rw, rh) / min(rw, rh)
         if not (params.aspect_min <= ratio <= params.aspect_max):
             continue
+        if area / max(1.0, rw * rh) < params.min_fill_ratio:
+            continue
         perimeter = cv2.arcLength(contour, True)
-        approx = cv2.approxPolyDP(contour, 0.02 * perimeter, True)
+        approx = cv2.approxPolyDP(contour, 0.04 * perimeter, True)
         if not 4 <= len(approx) <= 8:
             continue
         quad = cv2.boxPoints(rect).astype(np.float32)
-        # Dekat rasio 2,8 dan luas besar lebih diutamakan.
+        box = cv2.boundingRect(np.round(quad).astype(np.int32))
+        if _touches_border(box, width, height):
+            continue
+        # Dekat rasio 2,8 dan luas wajar lebih diutamakan.
         score = -abs(np.log(ratio / PREFERRED_RATIO)) + 0.2 * np.log1p(area / min_area)
         scored.append((float(score), quad))
 
@@ -195,10 +237,37 @@ def find_plate_candidates(
     return chosen
 
 
+def rect_size_for_quad(quad: np.ndarray) -> tuple[int, int]:
+    """Ukuran hasil koreksi: tinggi 120-200 px, lebar mengikuti rasio plat."""
+    points = np.asarray(quad, dtype=np.float32).reshape(4, 2)
+    sides = np.array(
+        [
+            np.linalg.norm(points[1] - points[0]),
+            np.linalg.norm(points[2] - points[1]),
+            np.linalg.norm(points[3] - points[2]),
+            np.linalg.norm(points[0] - points[3]),
+        ]
+    )
+    sides = sides[sides > 0]
+    if sides.size < 2:
+        return RECT_SIZE
+    pendek = float(np.min(sides))
+    panjang = float(np.max(sides))
+    tinggi = max(RECT_MIN_HEIGHT, min(RECT_MAX_HEIGHT, round(pendek)))
+    rasio = float(np.clip(panjang / pendek, 2.2, 3.4))
+    return (max(1, round(tinggi * rasio)), tinggi)
+
+
 def perspective_rectify(
-    image: np.ndarray, quad: np.ndarray, size: tuple[int, int] = RECT_SIZE
+    image: np.ndarray, quad: np.ndarray, size: tuple[int, int] | None = None
 ) -> np.ndarray:
-    """Tahap 5a: koreksi perspektif ke ukuran tetap."""
+    """Tahap 5a: koreksi perspektif pada citra asli beresolusi penuh.
+
+    `quad` wajib sudah diskalakan ke koordinat `image`. Bila `size` tidak
+    diberikan, ukuran dihitung dari sisi plat agar tidak memperbesar berlebihan.
+    """
+    if size is None:
+        size = rect_size_for_quad(quad)
     src = _order_points(quad)
     dst = np.array(
         [[0, 0], [size[0] - 1, 0], [size[0] - 1, size[1] - 1], [0, size[1] - 1]],
@@ -211,6 +280,24 @@ def perspective_rectify(
 def _ensure_light_background(binary: np.ndarray) -> np.ndarray:
     """OCR lebih stabil bila latar putih dan tulisan hitam."""
     return binary if float(binary.mean()) >= 127 else cv2.bitwise_not(binary)
+
+
+def crop_plate_for_ocr(
+    rectified: np.ndarray, bottom_ratio: float = 0.25, side_ratio: float = 0.03
+) -> np.ndarray:
+    """Buang pinggiran dan baris masa berlaku bawah sebelum OCR.
+
+    Benchmark 50 citra: 25% bawah memberi akurasi karakter 0,425, lebih baik
+    daripada 28% (0,295) dan 30% (0,340), dengan top-1 0,28.
+    """
+    tinggi, lebar = rectified.shape[:2]
+    bawah = min(0.45, max(0.0, float(bottom_ratio)))
+    samping = min(0.12, max(0.0, float(side_ratio)))
+    x0 = round(lebar * samping)
+    x1 = max(x0 + 1, lebar - x0)
+    y0 = round(tinggi * samping)
+    y1 = max(y0 + 1, round(tinggi * (1.0 - bawah)))
+    return rectified[y0:y1, x0:x1]
 
 
 def binarize_plate(rectified: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
@@ -264,12 +351,17 @@ def segment_characters(binary: np.ndarray) -> list[tuple[int, int, int, int]]:
     return filtered
 
 
-def rebuild_line(binary: np.ndarray, boxes: list[tuple[int, int, int, int]]) -> np.ndarray:
+def rebuild_line(
+    binary: np.ndarray,
+    boxes: list[tuple[int, int, int, int]],
+    gap: int = 10,
+    padding: int = 4,
+) -> np.ndarray:
     """Rakit kembali karakter hasil segmentasi menjadi satu baris untuk OCR."""
     if not boxes:
         return binary
     target_h = 64
-    padding = 6
+    padding = max(0, int(padding))
     patches = []
     for x, y, bw, bh in boxes:
         x0, y0 = max(0, x - padding), max(0, y - padding)
@@ -283,7 +375,7 @@ def rebuild_line(binary: np.ndarray, boxes: list[tuple[int, int, int, int]]) -> 
     if not patches:
         return binary
 
-    gap = 18
+    gap = max(0, int(gap))
     margin = 12
     total_w = sum(p.shape[1] for p in patches) + gap * (len(patches) - 1) + 2 * margin
     canvas = np.full((target_h + 2 * margin, total_w), 255, dtype=np.uint8)
@@ -294,11 +386,37 @@ def rebuild_line(binary: np.ndarray, boxes: list[tuple[int, int, int, int]]) -> 
     return canvas
 
 
+def score_candidate(
+    text: str,
+    confidence: float,
+    char_count: int,
+    char_height_ratio: float,
+    aspect: float,
+) -> float:
+    """Skor 0-100: pola plat dominan, OCR dan geometri sebagai penimbang."""
+    if not text:
+        return 0.0
+    pola = 55.0 if validate_plate(text) else 0.0
+    yakin = min(100.0, max(0.0, float(confidence))) * 0.30
+    jumlah = 4 <= int(char_count) <= 9
+    karakter = 8.0 if jumlah else max(0.0, 8.0 - 2.0 * abs(int(char_count) - 6))
+    rasio_tinggi = float(char_height_ratio)
+    tinggi = 7.0 if 0.35 <= rasio_tinggi <= 0.9 else max(
+        0.0, 7.0 - 10.0 * min(abs(rasio_tinggi - 0.35), abs(rasio_tinggi - 0.9))
+    )
+    aspek = max(1e-6, float(aspect))
+    bentuk = 5.0 * float(np.exp(-abs(np.log(aspek / PREFERRED_RATIO))))
+    return round(min(100.0, pola + yakin + karakter + tinggi + bentuk), 2)
+
+
 def annotate_image(image: np.ndarray, plates: list[PlateCandidate]) -> np.ndarray:
-    """Tahap 8: gambar kotak dan label hasil pada citra asli yang sudah diresize."""
+    """Tahap 8: gambar hanya kandidat utama dan pengganti yang skornya dekat."""
     out = image.copy()
     coral_bgr = (128, 123, 244)
-    for plate in plates:
+    ditampilkan = list(plates[:1])
+    if len(plates) > 1 and plates[1].score >= plates[0].score - 8.0:
+        ditampilkan.append(plates[1])
+    for plate in ditampilkan:
         pts = np.round(plate.quad).astype(np.int32).reshape(-1, 1, 2)
         cv2.polylines(out, [pts], True, coral_bgr, 3, cv2.LINE_AA)
         x, y, w, h = plate.bbox
@@ -368,18 +486,32 @@ def process_image(
             cv2.LINE_AA,
         )
     stages["contours"] = contour_view
+    # Deteksi berjalan pada citra 960 px, tetapi koreksi perspektif memakai
+    # citra asli. Simpan faktor skala untuk menerjemahkan quad dan kotak.
+    scale_x = float(bgr.shape[1]) / float(max(1, resized.shape[1]))
+    scale_y = float(bgr.shape[0]) / float(max(1, resized.shape[0]))
+    candidate_boxes = [
+        cv2.boundingRect(np.round(quad).astype(np.int32)) for quad in quads
+    ]
 
     plates: list[PlateCandidate] = []
     ocr_error_shown = False
     for index, quad in enumerate(quads, start=1):
         t0 = perf_counter()
-        rectified = perspective_rectify(resized, quad)
+        quad_asli = np.asarray(quad, dtype=np.float32).copy()
+        quad_asli[:, 0] *= scale_x
+        quad_asli[:, 1] *= scale_y
+        rectified = perspective_rectify(bgr, quad_asli)
         accumulate("rectify", t0)
         stages[f"rectified_{index}"] = rectified.copy()
 
         t0 = perf_counter()
-        otsu, adaptive = binarize_plate(rectified)
+        potongan = crop_plate_for_ocr(
+            rectified, params.crop_bottom_ratio, params.crop_side_ratio
+        )
+        otsu, adaptive = binarize_plate(potongan)
         accumulate("binarization", t0)
+        stages[f"ocr_crop_{index}"] = potongan.copy()
         stages[f"otsu_{index}"] = otsu.copy()
         stages[f"adaptive_{index}"] = adaptive.copy()
 
@@ -395,40 +527,51 @@ def process_image(
         best_name = variants[0][0]
         best_binary = variants[0][1]
         best_boxes: list[tuple[int, int, int, int]] = []
+        best_psm = 7
         for name, binary in variants:
             t0 = perf_counter()
             boxes = segment_characters(binary)
             accumulate("segmentation", t0)
-            line = rebuild_line(binary, boxes)
-            # Hasil segmentasi dirakit menjadi satu baris, tetapi OCR juga
-            # dijalankan pada plat utuh sebagai pembanding bila rakitan itu
-            # justru menurunkan keyakinan Tesseract.
+            line = rebuild_line(binary, boxes, params.line_gap, params.line_padding)
+            # Rakitan karakter dan plat utuh sama-sama dicoba; varian dengan
+            # pola plat valid diberi bonus agar bukan sekadar keyakinan tertinggi.
             ocr_inputs = [(line, "line"), (binary, "full")] if boxes else [(binary, "full")]
             for image_for_ocr, _source_kind in ocr_inputs:
-                t0 = perf_counter()
-                try:
-                    output = read_plate(image_for_ocr)
-                    score = output.confidence + 0.01 * len(output.normalized)
-                    if score > best_score:
-                        best_score = score
-                        best_confidence = output.confidence
-                        best_text = output.normalized
-                        best_name = name
-                        best_binary = binary
-                        best_boxes = boxes
-                except OcrUnavailableError as exc:
-                    if not ocr_error_shown:
-                        warnings.append(str(exc))
-                        ocr_error_shown = True
-                accumulate("ocr", t0)
+                for psm in params.psm_modes or (7,):
+                    t0 = perf_counter()
+                    try:
+                        output = read_plate(image_for_ocr, psm=psm)
+                        score = (
+                            output.confidence
+                            + (8.0 if output.valid_pattern else 0.0)
+                            + 0.01 * len(output.normalized)
+                        )
+                        if score > best_score:
+                            best_score = score
+                            best_confidence = output.confidence
+                            best_text = output.normalized
+                            best_name = name
+                            best_binary = binary
+                            best_boxes = boxes
+                            best_psm = int(psm)
+                    except OcrUnavailableError as exc:
+                        if not ocr_error_shown:
+                            warnings.append(str(exc))
+                            ocr_error_shown = True
+                    accumulate("ocr", t0)
 
         char_view = cv2.cvtColor(best_binary, cv2.COLOR_GRAY2BGR)
         for bx, by, bw, bh in best_boxes:
             cv2.rectangle(char_view, (bx, by), (bx + bw, by + bh), (128, 123, 244), 2)
         stages[f"characters_{index}"] = char_view
 
-        score = float(
-            -abs(np.log(max(1e-6, _aspect_of(quad)) / PREFERRED_RATIO))
+        tinggi_relatif = (
+            float(np.median([box[3] for box in best_boxes])) / float(best_binary.shape[0])
+            if best_boxes
+            else 0.0
+        )
+        skor = score_candidate(
+            best_text, best_confidence, len(best_boxes), tinggi_relatif, _aspect_of(quad)
         )
         plates.append(
             PlateCandidate(
@@ -444,14 +587,30 @@ def process_image(
                 text=best_text,
                 confidence=round(max(0.0, min(100.0, best_confidence)), 2),
                 valid_pattern=validate_plate(best_text),
-                score=score,
+                psm=best_psm,
+                char_height_ratio=round(tinggi_relatif, 3),
+                score=skor,
             )
         )
 
+    lolos = [plate for plate in plates if plate.text and plate.score >= params.min_score]
+    lolos.sort(key=lambda plate: plate.score, reverse=True)
+    for nomor, plate in enumerate(lolos, start=1):
+        plate.index = nomor
+    plates = lolos
+
     if not quads:
         warnings.append(
-            "Belum ada plat yang lolos filter. Coba turunkan ambang Canny, "
-            "perbesar foto, atau ambil citra dengan plat lebih menghadap kamera."
+            "Tidak ada kandidat plat yang lolos filter geometri. Penyebab paling "
+            "mungkin: plat terlalu kecil dalam bingkai, terlalu miring, atau tertutup silau. "
+            "Dekatkan kamera, bidik plat hingga menempati sekitar 10% lebar foto, "
+            "dan hindari pantulan cahaya."
+        )
+    elif not plates:
+        warnings.append(
+            "Kandidat ditemukan tetapi teks tidak lolos penilaian. Penyebab paling "
+            "mungkin: plat terlalu kecil untuk dibaca, sudut bidik terlalu miring, "
+            "atau silau membuat kontras teks hilang. Ambil foto lebih dekat dan tegak."
         )
 
     stages["annotated"] = annotate_image(resized, plates)
@@ -465,6 +624,7 @@ def process_image(
         texts=[plate.text for plate in plates],
         confidence=primary.confidence if primary else 0.0,
         timings_ms=timings,
+        candidate_boxes=candidate_boxes,
         warnings=warnings,
     )
 

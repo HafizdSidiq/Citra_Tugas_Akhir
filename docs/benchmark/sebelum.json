@@ -1,0 +1,26 @@
+{
+  "waktu": "2026-11-25T11:27:49+00:00",
+  "sumber": "Kaggle juanthomaswijaya/indonesian-license-plate-dataset, split test",
+  "acuan": "docs\\acuan_ocr.csv",
+  "n_citra_diminta": 60,
+  "n_citra_dipakai": 60,
+  "n_kotak_acuan": 118,
+  "ambang_iou": 0.5,
+  "recall_lokalisasi": 0.0085,
+  "hit_top1": 0.0167,
+  "rata_kotak_per_citra": 5.833,
+  "n_teks_acuan": 0,
+  "akurasi_plat": null,
+  "akurasi_karakter": null,
+  "params": {
+    "canny_low": 50,
+    "canny_high": 150,
+    "min_area_ratio": 0.001,
+    "aspect_min": 1.6,
+    "aspect_max": 3.8,
+    "max_candidates": 6,
+    "use_clahe": true,
+    "binarization": "auto"
+  },
+  "gagal": []
+}

@@ -59,12 +59,36 @@ def intro_class() -> str:
 def page_header(
     title: str,
     subtitle: str,
-    eyebrow: str = "Pengolahan Citra Digital · Tugas Akhir",
+    eyebrow: str = "Plat Scanner · Pengolahan Citra Digital",
 ) -> None:
     st.markdown(
         f'<div class="{intro_class()}"><div class="eyebrow">{html.escape(eyebrow)}</div>'
         f'<h1 class="page-title">{html.escape(title)}</h1>'
         f'<p class="page-subtitle">{html.escape(subtitle)}</p></div>',
+        unsafe_allow_html=True,
+    )
+
+
+def render_identity_header() -> None:
+    """Identitas Plat Scanner untuk Beranda, mengikuti desain sampul."""
+    judul_resmi = (
+        "Pengenalan Plat Nomor Kendaraan Indonesia dengan Pengolahan Citra "
+        "Klasik dan Tesseract OCR"
+    )
+    st.markdown(
+        f'<div class="{intro_class()} hero-identitas">'
+        '<div class="eyebrow">Pengolahan Citra Digital · Tugas Akhir</div>'
+        '<h1 class="hero-judul"><span class="baris-1">PLAT</span>'
+        '<span class="baris-2">SCANNER</span></h1>'
+        '<p class="hero-tagline">Plat terbaca, langkahnya terlihat.</p>'
+        f'<p class="hero-judul-resmi">{html.escape(judul_resmi)}</p>'
+        '<p class="hero-penjelasan">Unggah foto, atur parameter, dan periksa '
+        'setiap tahapnya.</p>'
+        '<div class="hero-pil">'
+        '<span class="pil-opencv">OpenCV</span>'
+        '<span class="pil-tesseract">Tesseract</span>'
+        '<span class="pil-streamlit">Streamlit</span>'
+        '</div></div>',
         unsafe_allow_html=True,
     )
 
@@ -219,18 +243,25 @@ def render_result_text(text: str) -> None:
     st.markdown(f'<div class="result-text">{spans}</div>', unsafe_allow_html=True)
 
 
-def render_plate_headline(text: str, confidence: float, n_plates: int) -> None:
-    """Teks plat besar, keyakinan sebagai pil berwarna."""
+def render_plate_headline(
+    text: str, confidence: float, n_plates: int, skor: float | None = None
+) -> None:
+    """Teks plat besar; kandidat utama diberi label jelas."""
     if not text:
         return
     spans = "".join(
         f'<span style="animation-delay:{i * 90}ms">{html.escape(char)}</span>'
         for i, char in enumerate(text)
     )
+    skor_pil = (
+        f'<span class="pil-keyakinan">Skor {float(skor):.0f}</span> ' if skor is not None else ""
+    )
     st.markdown(
+        f'<span style="font-size:13px;font-weight:700">Hasil utama</span>'
         '<div class="result-headline">'
         f'<div class="result-text">{spans}</div>'
         f'<span class="pil-keyakinan">Keyakinan {float(confidence):.0f}%</span> '
+        f'{skor_pil}'
         f'<span style="font-size:13px">{int(n_plates)} plat terdeteksi</span></div>',
         unsafe_allow_html=True,
     )
@@ -308,36 +339,55 @@ def parameter_widgets() -> PipelineParams:
                 "Ambang Canny bawah",
                 20,
                 120,
-                50,
+                70,
                 5,
                 key="canny_low",
-                help="Batas tepi lemah. Naikkan bila gambar terlalu banyak noise.",
+                help="Batas tepi lemah. Turunkan bila plat kecil tidak terdeteksi.",
             )
             high = st.slider(
                 "Ambang Canny atas",
                 60,
-                240,
-                150,
+                260,
+                210,
                 10,
                 key="canny_high",
-                help="Batas tepi kuat. Turunkan bila tepi plat mudah putus.",
+                help="Batas tepi kuat. Naikkan bila terlalu banyak kontur palsu.",
             )
             min_area = st.slider(
                 "Luas minimum (× citra)",
                 0.0002,
                 0.005,
-                0.001,
+                0.0003,
                 0.0001,
                 format="%.4f",
                 key="min_area",
                 help="Kotak lebih kecil dari nilai ini diabaikan sebagai plat.",
             )
+            max_area = st.slider(
+                "Luas maksimum (× citra)",
+                0.05,
+                0.60,
+                0.25,
+                0.05,
+                format="%.2f",
+                key="max_area",
+                help="Kotak lebih besar dari ini dianggap bingkai/foto, bukan plat.",
+            )
         with kanan:
+            min_score = st.slider(
+                "Ambang skor hasil",
+                0,
+                90,
+                55,
+                5,
+                key="min_score",
+                help="Bacaan di bawah skor ini dibuang agar kotak dan teks palsu berkurang.",
+            )
             aspect_min = st.slider(
                 "Rasio minimum",
                 1.4,
                 3.0,
-                1.6,
+                1.4,
                 0.1,
                 key="aspect_min",
                 help="Rasio lebar terhadap tinggi terkecil yang diterima sebagai plat.",
@@ -362,7 +412,7 @@ def parameter_widgets() -> PipelineParams:
                 ["auto", "otsu", "adaptive"],
                 index=0,
                 key="binarization",
-                help="auto mencoba Otsu dan adaptif, lalu memilih keyakinan OCR tertinggi.",
+                help="auto mencoba Otsu dan adaptif, lalu memilih skor OCR tertinggi.",
             )
     high = max(high, low + 10)
     aspect_max = max(aspect_max, aspect_min + 0.2)
@@ -370,6 +420,8 @@ def parameter_widgets() -> PipelineParams:
         canny_low=low,
         canny_high=high,
         min_area_ratio=float(min_area),
+        max_area_ratio=float(max_area),
+        min_score=float(min_score),
         aspect_min=float(aspect_min),
         aspect_max=float(aspect_max),
         use_clahe=use_clahe,
@@ -408,60 +460,75 @@ def performance_from_result(result: Any) -> list[tuple[str, str]]:
 # iframe yang memang diisolasi dari markdown).
 # --------------------------------------------------------------------------
 TAHAP_SIMULASI = [
-    ("01", "Perkecil citra", "#6d3cff"),
-    ("02", "Abu-abu", "#00c4cc"),
-    ("03", "CLAHE", "#ffd23f"),
-    ("04", "Canny", "#ff6b9d"),
-    ("05", "Kontur", "#6d3cff"),
-    ("06", "Binerisasi", "#00c4cc"),
-    ("07", "Segmentasi", "#ffd23f"),
-    ("08", "OCR", "#ff6b9d"),
+    ("1", "Resize", "#241f47"),
+    ("2", "CLAHE", "#241f47"),
+    ("3", "Canny", "#241f47"),
+    ("4", "Kontur", "#241f47"),
+    ("5", "Perspektif", "#241f47"),
+    ("6", "Segmentasi", "#241f47"),
+    ("7", "OCR", "#ffd23f"),
+    ("8", "Hasil", "#00c4cc"),
 ]
 
 
 def render_hero_stage() -> None:
-    """Panggung simulasi delapan tahap, berjalan dengan CSS saja."""
-    panels = []
-    for index, (nomor, nama, warna) in enumerate(TAHAP_SIMULASI):
-        panels.append(
-            '<section class="panel" style="--w:' + warna + '">'
-            f'<span class="nomor">{nomor}</span>'
-            '<div class="plat"><i></i><b>B1234ABC</b><i></i></div>'
-            f'<span class="nama">{html.escape(nama)}</span></section>'
+    """Jendela pemindai gelap dengan delapan tahap sebagai pil kecil."""
+    pil = []
+    for nomor, nama, warna in TAHAP_SIMULASI:
+        kelas = "pil-tahap pil-gelap"
+        if nomor == "7":
+            kelas = "pil-tahap pil-terang"
+        elif nomor == "8":
+            kelas = "pil-tahap pil-terang"
+        pil.append(
+            f'<span class="{kelas}" style="background:{warna}">'
+            f'<b>{nomor}</b> {html.escape(nama)}</span>'
         )
     css = """
       html,body{margin:0;background:transparent;font-family:Figtree,system-ui,sans-serif}
-      .panggung{position:relative;width:100%;height:420px;border-radius:30px;overflow:hidden;
-        background:#6d3cff;box-shadow:0 40px 70px -34px rgba(20,17,43,.6)}
-      .jalur{display:flex;width:800%;height:100%;animation:putar 16s steps(8,end) infinite}
-      .panel{width:12.5%;height:100%;flex:none;display:flex;flex-direction:column;
-        align-items:center;justify-content:center;gap:22px;background:#6d3cff;color:#fff;position:relative}
-      .panel::before{content:"";position:absolute;width:78%;aspect-ratio:4/3;border-radius:26px;
-        background:rgba(255,255,255,.08)}
-      .nomor{font:800 70px Unbounded,sans-serif;opacity:.22;position:relative}
-      .plat{position:relative;display:flex;align-items:center;gap:10px;padding:16px 22px;
-        border-radius:20px;background:#fff;color:#14112b;box-shadow:0 18px 30px -16px rgba(0,0,0,.6)}
-      .plat i{width:12px;height:38px;border-radius:6px;background:var(--w)}
-      .plat b{font:800 24px Unbounded,sans-serif;letter-spacing:.06em}
-      .nama{position:relative;font:700 18px Figtree,sans-serif;padding:8px 20px;border-radius:30px;
-        background:var(--w);color:#14112b}
-      .garis{position:absolute;left:0;right:0;height:14px;top:0;pointer-events:none;
-        background:linear-gradient(90deg,transparent,#ffd23f,transparent);
-        animation:sapu 2.2s ease-in-out infinite}
-      .keterangan{position:absolute;left:14px;bottom:14px;z-index:2;padding:6px 14px;border-radius:30px;
-        background:#14112b;color:#fff;font-size:12px;font-weight:700}
-      @keyframes putar{to{transform:translateX(-87.5%)}}
-      @keyframes sapu{0%{transform:translateY(0);opacity:0}15%,85%{opacity:1}100%{transform:translateY(406px);opacity:0}}
-      @media(prefers-reduced-motion:reduce){.jalur,.garis{animation:none!important}.garis{display:none}}
-      @media(max-width:560px){.panggung{height:330px}.plat b{font-size:18px}.nomor{font-size:54px}}
+      .pemindai{position:relative;width:100%;height:300px;border-radius:36px;overflow:hidden;
+        background-color:#1b1736;
+        background-image:linear-gradient(rgba(245,242,255,.07) 1px,transparent 1px),
+                         linear-gradient(90deg,rgba(245,242,255,.07) 1px,transparent 1px);
+        background-size:34px 34px;
+        box-shadow:0 34px 64px -34px rgba(20,17,43,.75)}
+      .siku{position:absolute;width:54px;height:54px;border:0 solid #00c4cc;pointer-events:none}
+      .siku.tl{top:18px;left:18px;border-top-width:6px;border-left-width:6px;border-top-left-radius:16px}
+      .siku.tr{top:18px;right:18px;border-top-width:6px;border-right-width:6px;border-top-right-radius:16px}
+      .siku.bl{bottom:18px;left:18px;border-bottom-width:6px;border-left-width:6px;border-bottom-left-radius:16px}
+      .siku.br{bottom:18px;right:18px;border-bottom-width:6px;border-right-width:6px;border-bottom-right-radius:16px}
+      .target{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+        padding:10px 14px;border:4px solid #ffd23f;border-radius:26px}
+      .label{position:absolute;left:10px;top:-16px;padding:4px 10px;border-radius:99px;
+        background:#ffd23f;color:#14112b;font-size:10px;font-weight:800;letter-spacing:.08em;white-space:nowrap}
+      .plat{display:block;padding:14px 26px;border-radius:16px;background:#fff;color:#14112b;
+        font:800 26px "Unbounded","Figtree",sans-serif;letter-spacing:.08em;white-space:nowrap}
+      .garis-pindai{position:absolute;left:6%;right:6%;height:3px;top:14%;border-radius:99px;
+        background:#ff6b9d;box-shadow:0 0 16px rgba(255,107,157,.9);pointer-events:none;
+        animation:pindai 4.5s ease-in-out infinite alternate}
+      @keyframes pindai{from{top:14%}to{top:86%}}
+      .keterangan{position:absolute;left:16px;bottom:14px;color:#b4aed1;font-size:12px;font-weight:700}
+      .tahap{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:14px}
+      .pil-tahap{padding:7px 12px;border-radius:99px;font-size:12px;font-weight:700;white-space:nowrap}
+      .pil-tahap b{margin-right:4px}
+      .pil-gelap{color:#f5f2ff}
+      .pil-terang{color:#14112b}
+      @media(prefers-reduced-motion:reduce){.garis-pindai{animation:none!important;top:50%;opacity:.5}}
+      @media(max-width:560px){.pemindai{height:260px}.plat{font-size:20px;padding:12px 18px}
+        .siku{width:40px;height:40px}.keterangan{font-size:11px}.pil-tahap{font-size:11px;padding:6px 9px}}
     """
     st.iframe(
         FONT_LINKS + f"<style>{css}</style>"
-        '<div class="panggung"><div class="jalur">' + "".join(panels) + "</div>"
-        '<div class="garis"></div>'
-        '<span class="keterangan">Simulasi ilustratif · bukan hasil OCR sungguhan</span></div>',
+        '<div class="pemindai">'
+        '<i class="siku tl" aria-hidden="true"></i><i class="siku tr" aria-hidden="true"></i>'
+        '<i class="siku bl" aria-hidden="true"></i><i class="siku br" aria-hidden="true"></i>'
+        '<div class="target"><span class="label">PLAT TERDETEKSI</span>'
+        '<span class="plat">B1234ABC</span></div>'
+        '<i class="garis-pindai" aria-hidden="true"></i>'
+        '<span class="keterangan">Simulasi ilustratif, bukan hasil OCR sungguhan</span>'
+        '</div><div class="tahap">' + "".join(pil) + "</div>",
         width="stretch",
-        height=430,
+        height=440,
     )
 
 

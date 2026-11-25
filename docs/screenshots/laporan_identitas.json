@@ -1,0 +1,476 @@
+{
+  "lebar_1280": {
+    "outer": {
+      "clipped": [],
+      "docScroll": {
+        "client": 1280,
+        "w": 1280
+      },
+      "eyebrow": "Pengolahan Citra Digital · Tugas Akhir",
+      "fontFigtree": true,
+      "fontUnbounded": true,
+      "heroRects": [
+        {
+          "bottom": 138,
+          "cls": "eyebrow",
+          "left": 116,
+          "right": 381,
+          "top": 118
+        },
+        {
+          "bottom": 340,
+          "cls": "hero-judul",
+          "left": 116,
+          "right": 621,
+          "top": 146
+        },
+        {
+          "bottom": 381,
+          "cls": "hero-tagline",
+          "left": 116,
+          "right": 621,
+          "top": 352
+        },
+        {
+          "bottom": 436,
+          "cls": "hero-judul-resmi",
+          "left": 116,
+          "right": 539,
+          "top": 391
+        },
+        {
+          "bottom": 464,
+          "cls": "hero-penjelasan",
+          "left": 116,
+          "right": 539,
+          "top": 442
+        },
+        {
+          "bottom": 507,
+          "cls": "pil-opencv",
+          "left": 116,
+          "right": 187,
+          "top": 476
+        },
+        {
+          "bottom": 507,
+          "cls": "pil-tesseract",
+          "left": 195,
+          "right": 275,
+          "top": 476
+        },
+        {
+          "bottom": 507,
+          "cls": "pil-streamlit",
+          "left": 283,
+          "right": 361,
+          "top": 476
+        }
+      ],
+      "judul": "PLATSCANNER",
+      "judulResmi": "Pengenalan Plat Nomor Kendaraan Indonesia dengan Pengolahan Citra Klasik dan Tesseract OCR",
+      "keteranganCount": 0,
+      "penjelasan": "Unggah foto, atur parameter, dan periksa setiap tahapnya.",
+      "pil": [
+        {
+          "teks": "OpenCV",
+          "teksWarna": "rgb(255, 255, 255)",
+          "warna": "rgb(109, 60, 255)"
+        },
+        {
+          "teks": "Tesseract",
+          "teksWarna": "rgb(20, 17, 43)",
+          "warna": "rgb(0, 196, 204)"
+        },
+        {
+          "teks": "Streamlit",
+          "teksWarna": "rgb(20, 17, 43)",
+          "warna": "rgb(255, 107, 157)"
+        }
+      ],
+      "sidebarLogoCount": 0,
+      "tagline": "Plat terbaca, langkahnya terlihat.",
+      "title": "Plat Scanner",
+      "tombol": [
+        {
+          "tag": "A",
+          "teks": "Baca plat"
+        }
+      ],
+      "viewport": {
+        "h": 900,
+        "w": 1280
+      },
+      "warnaBaris1": "rgb(20, 17, 43)",
+      "warnaBaris2": "rgb(109, 60, 255)",
+      "wordmark": "\"Plat Scanner\""
+    },
+    "iframe": {
+      "bodyScroll": {
+        "client": 479,
+        "clientH": 332,
+        "h": 332,
+        "w": 479
+      },
+      "clipped": [],
+      "garis": {
+        "animation": "pindai",
+        "ariaHidden": "true",
+        "bg": "rgb(255, 107, 157)"
+      },
+      "keterangan": [
+        "Simulasi ilustratif, bukan hasil OCR sungguhan"
+      ],
+      "keteranganCount": 1,
+      "label": {
+        "bg": "rgb(255, 210, 63)",
+        "color": "rgb(20, 17, 43)",
+        "teks": "PLAT TERDETEKSI"
+      },
+      "plat": {
+        "bg": "rgb(255, 255, 255)",
+        "color": "rgb(20, 17, 43)",
+        "teks": "B1234ABC"
+      },
+      "siku": [
+        {
+          "ariaHidden": "true",
+          "borderColor": "rgb(0, 196, 204)"
+        },
+        {
+          "ariaHidden": "true",
+          "borderColor": "rgb(0, 196, 204)"
+        },
+        {
+          "ariaHidden": "true",
+          "borderColor": "rgb(0, 196, 204)"
+        },
+        {
+          "ariaHidden": "true",
+          "borderColor": "rgb(0, 196, 204)"
+        }
+      ],
+      "stage": {
+        "color": "rgb(27, 23, 54)",
+        "h": 260,
+        "image": "linear-gradient(rgba(245, 242, 255, 0.07) 1px, rgba(0, 0, 0, 0) 1px), linear-gradient(90deg, rgba(245, 242, 255, 0.07) 1px, rgba(0, 0, 0, 0) 1px)",
+        "radius": "36px",
+        "w": 479
+      },
+      "tahap": [
+        {
+          "bg": "rgb(36, 31, 71)",
+          "color": "rgb(245, 242, 255)",
+          "teks": "1 Resize"
+        },
+        {
+          "bg": "rgb(36, 31, 71)",
+          "color": "rgb(245, 242, 255)",
+          "teks": "2 CLAHE"
+        },
+        {
+          "bg": "rgb(36, 31, 71)",
+          "color": "rgb(245, 242, 255)",
+          "teks": "3 Canny"
+        },
+        {
+          "bg": "rgb(36, 31, 71)",
+          "color": "rgb(245, 242, 255)",
+          "teks": "4 Kontur"
+        },
+        {
+          "bg": "rgb(36, 31, 71)",
+          "color": "rgb(245, 242, 255)",
+          "teks": "5 Perspektif"
+        },
+        {
+          "bg": "rgb(36, 31, 71)",
+          "color": "rgb(245, 242, 255)",
+          "teks": "6 Segmentasi"
+        },
+        {
+          "bg": "rgb(255, 210, 63)",
+          "color": "rgb(20, 17, 43)",
+          "teks": "7 OCR"
+        },
+        {
+          "bg": "rgb(0, 196, 204)",
+          "color": "rgb(20, 17, 43)",
+          "teks": "8 Hasil"
+        }
+      ],
+      "viewport": {
+        "h": 440,
+        "w": 479
+      }
+    },
+    "screenshot": "docs\\screenshots\\beranda.png"
+  },
+  "lebar_400": {
+    "outer": {
+      "clipped": [],
+      "docScroll": {
+        "client": 400,
+        "w": 400
+      },
+      "eyebrow": "Pengolahan Citra Digital · Tugas Akhir",
+      "fontFigtree": true,
+      "fontUnbounded": true,
+      "heroRects": [
+        {
+          "bottom": 150,
+          "cls": "eyebrow",
+          "left": 26,
+          "right": 290,
+          "top": 131
+        },
+        {
+          "bottom": 346,
+          "cls": "hero-judul",
+          "left": 26,
+          "right": 374,
+          "top": 158
+        },
+        {
+          "bottom": 383,
+          "cls": "hero-tagline",
+          "left": 26,
+          "right": 374,
+          "top": 358
+        },
+        {
+          "bottom": 435,
+          "cls": "hero-judul-resmi",
+          "left": 26,
+          "right": 374,
+          "top": 393
+        },
+        {
+          "bottom": 462,
+          "cls": "hero-penjelasan",
+          "left": 26,
+          "right": 374,
+          "top": 441
+        },
+        {
+          "bottom": 505,
+          "cls": "pil-opencv",
+          "left": 26,
+          "right": 97,
+          "top": 474
+        },
+        {
+          "bottom": 505,
+          "cls": "pil-tesseract",
+          "left": 105,
+          "right": 184,
+          "top": 474
+        },
+        {
+          "bottom": 505,
+          "cls": "pil-streamlit",
+          "left": 192,
+          "right": 271,
+          "top": 474
+        }
+      ],
+      "judul": "PLATSCANNER",
+      "judulResmi": "Pengenalan Plat Nomor Kendaraan Indonesia dengan Pengolahan Citra Klasik dan Tesseract OCR",
+      "keteranganCount": 0,
+      "penjelasan": "Unggah foto, atur parameter, dan periksa setiap tahapnya.",
+      "pil": [
+        {
+          "teks": "OpenCV",
+          "teksWarna": "rgb(255, 255, 255)",
+          "warna": "rgb(109, 60, 255)"
+        },
+        {
+          "teks": "Tesseract",
+          "teksWarna": "rgb(20, 17, 43)",
+          "warna": "rgb(0, 196, 204)"
+        },
+        {
+          "teks": "Streamlit",
+          "teksWarna": "rgb(20, 17, 43)",
+          "warna": "rgb(255, 107, 157)"
+        }
+      ],
+      "sidebarLogoCount": 0,
+      "tagline": "Plat terbaca, langkahnya terlihat.",
+      "title": "Plat Scanner",
+      "tombol": [
+        {
+          "tag": "A",
+          "teks": "Baca plat"
+        }
+      ],
+      "viewport": {
+        "h": 900,
+        "w": 400
+      },
+      "warnaBaris1": "rgb(20, 17, 43)",
+      "warnaBaris2": "rgb(109, 60, 255)",
+      "wordmark": "\"Plat Scanner\""
+    },
+    "iframe": {
+      "bodyScroll": {
+        "client": 349,
+        "clientH": 332,
+        "h": 332,
+        "w": 349
+      },
+      "clipped": [],
+      "garis": {
+        "animation": "pindai",
+        "ariaHidden": "true",
+        "bg": "rgb(255, 107, 157)"
+      },
+      "keterangan": [
+        "Simulasi ilustratif, bukan hasil OCR sungguhan"
+      ],
+      "keteranganCount": 1,
+      "label": {
+        "bg": "rgb(255, 210, 63)",
+        "color": "rgb(20, 17, 43)",
+        "teks": "PLAT TERDETEKSI"
+      },
+      "plat": {
+        "bg": "rgb(255, 255, 255)",
+        "color": "rgb(20, 17, 43)",
+        "teks": "B1234ABC"
+      },
+      "siku": [
+        {
+          "ariaHidden": "true",
+          "borderColor": "rgb(0, 196, 204)"
+        },
+        {
+          "ariaHidden": "true",
+          "borderColor": "rgb(0, 196, 204)"
+        },
+        {
+          "ariaHidden": "true",
+          "borderColor": "rgb(0, 196, 204)"
+        },
+        {
+          "ariaHidden": "true",
+          "borderColor": "rgb(0, 196, 204)"
+        }
+      ],
+      "stage": {
+        "color": "rgb(27, 23, 54)",
+        "h": 260,
+        "image": "linear-gradient(rgba(245, 242, 255, 0.07) 1px, rgba(0, 0, 0, 0) 1px), linear-gradient(90deg, rgba(245, 242, 255, 0.07) 1px, rgba(0, 0, 0, 0) 1px)",
+        "radius": "36px",
+        "w": 349
+      },
+      "tahap": [
+        {
+          "bg": "rgb(36, 31, 71)",
+          "color": "rgb(245, 242, 255)",
+          "teks": "1 Resize"
+        },
+        {
+          "bg": "rgb(36, 31, 71)",
+          "color": "rgb(245, 242, 255)",
+          "teks": "2 CLAHE"
+        },
+        {
+          "bg": "rgb(36, 31, 71)",
+          "color": "rgb(245, 242, 255)",
+          "teks": "3 Canny"
+        },
+        {
+          "bg": "rgb(36, 31, 71)",
+          "color": "rgb(245, 242, 255)",
+          "teks": "4 Kontur"
+        },
+        {
+          "bg": "rgb(36, 31, 71)",
+          "color": "rgb(245, 242, 255)",
+          "teks": "5 Perspektif"
+        },
+        {
+          "bg": "rgb(36, 31, 71)",
+          "color": "rgb(245, 242, 255)",
+          "teks": "6 Segmentasi"
+        },
+        {
+          "bg": "rgb(255, 210, 63)",
+          "color": "rgb(20, 17, 43)",
+          "teks": "7 OCR"
+        },
+        {
+          "bg": "rgb(0, 196, 204)",
+          "color": "rgb(20, 17, 43)",
+          "teks": "8 Hasil"
+        }
+      ],
+      "viewport": {
+        "h": 440,
+        "w": 349
+      }
+    },
+    "screenshot": "docs\\screenshots\\beranda_400.png"
+  },
+  "ringkasan": {
+    "page_title": "Plat Scanner",
+    "wordmark": "Plat Scanner",
+    "eyebrow": "Pengolahan Citra Digital · Tugas Akhir",
+    "judul": "PLATSCANNER",
+    "tagline": "Plat terbaca, langkahnya terlihat.",
+    "judul_resmi": "Pengenalan Plat Nomor Kendaraan Indonesia dengan Pengolahan Citra Klasik dan Tesseract OCR",
+    "pil": [
+      "OpenCV",
+      "Tesseract",
+      "Streamlit"
+    ],
+    "tombol_asli": [
+      {
+        "tag": "A",
+        "teks": "Baca plat"
+      }
+    ],
+    "keterangan_satu_kali": true,
+    "siku_aria_hidden": true,
+    "garis_aria_hidden": true,
+    "tahap": [
+      "1 Resize",
+      "2 CLAHE",
+      "3 Canny",
+      "4 Kontur",
+      "5 Perspektif",
+      "6 Segmentasi",
+      "7 OCR",
+      "8 Hasil"
+    ],
+    "kontras": {
+      "putih_di_ungu": 5.61,
+      "tinta_di_tosca": 8.53,
+      "tinta_di_pink": 6.85,
+      "ungu_di_latar": 5.37,
+      "putih_di_pil_gelap": 13.97,
+      "tinta_di_kuning": 12.7,
+      "sekunder_di_kartu_gelap": 8.11
+    },
+    "tidak_ada_teks_terpotong_1280": true,
+    "tidak_ada_teks_terpotong_400": true,
+    "tidak_ada_gulir_1280": true,
+    "tidak_ada_gulir_400": true,
+    "font": {
+      "unbounded": true,
+      "figtree": true
+    },
+    "ukuran_screenshot": {
+      "1280": [
+        1280,
+        900
+      ],
+      "400": [
+        400,
+        900
+      ]
+    },
+    "semua_kontras_min_4_5": true
+  }
+}
