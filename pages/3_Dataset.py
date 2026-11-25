@@ -1,4 +1,4 @@
-"""Halaman Dataset: sumber, struktur, lisensi, dan galeri contoh."""
+"""Halaman Dataset: sumber, lisensi, struktur, dan galeri contoh."""
 
 from __future__ import annotations
 
@@ -14,31 +14,18 @@ from ui.components import (
     page_header,
     render_empty_state,
     render_failure_card,
-    render_performance_panel,
     render_stat_grid,
 )
 
-bootstrap("Dataset · Plat Nomor")
+bootstrap()
 
 REFERENCE_CSV = Path("docs/acuan_ocr.csv")
 
-main, perf = st.columns([1.73, 1], gap="large")
-
-with main:
+with st.container(border=True, key="kartu_dataset"):
     page_header(
         "Dataset",
         "Sumber data publik yang dipakai sebagai contoh, bukan sebagai teks acuan otomatis.",
     )
-
-    status = dataset_status()
-    if status["available"]:
-        st.caption("Status koneksi: **terhubung** ke Kaggle.")
-    else:
-        render_failure_card(
-            status["message"]
-            + " Informasi dataset tetap ditampilkan; galeri dinonaktifkan sementara."
-        )
-
     render_stat_grid(
         [
             ("Citra deteksi", "1000", "800 / 100 / 100", True),
@@ -47,22 +34,28 @@ with main:
         ]
     )
 
-    st.subheader("Sumber")
+with st.container(border=True, key="kartu_sumber"):
+    st.markdown("**Sumber dataset**")
     st.markdown(
         f"- Nama: **Indonesian License Plate Dataset**\n"
         f"- Handle Kaggle: `{DATASET_HANDLE}`\n"
         "- Pembuat: Juan Thomas Wijaya\n"
         "- Versi: 1, diperbarui 2024-12-18\n"
-        "- Lisensi menurut metadata: **Unknown**\n"
         "- Ukuran penuh ≈ 2,07 GB; **tidak diunduh seluruhnya**\n"
         "- Halaman: https://www.kaggle.com/datasets/juanthomaswijaya/indonesian-license-plate-dataset"
     )
+
+with st.container(border=True, key="kartu_lisensi"):
+    st.markdown("**Lisensi dan batasan**")
+    st.markdown("Lisensi menurut metadata: **Unknown**.")
     st.caption(
-        "Lisensi tidak dikarang. Karena metadata tidak mencantumkan nama/URL lisensi, "
-        "dataset diperlakukan hanya untuk keperluan tugas akademik dan kredit ditulis di README."
+        "Nama lisensi tidak dikarang. Karena metadata tidak mencantumkannya, "
+        "dataset hanya dipakai untuk keperluan tugas akademik dan kredit ditulis di README. "
+        "Nilai ini sengaja tidak diubah menjadi persentase."
     )
 
-    st.subheader("Struktur yang dipakai")
+with st.container(border=True, key="kartu_struktur"):
+    st.markdown("**Struktur yang dipakai**")
     st.dataframe(
         pd.DataFrame(
             [
@@ -84,22 +77,21 @@ with main:
         hide_index=True,
         width="stretch",
     )
-
-    st.subheader("Format label")
+    st.caption(
+        "Berkas `labelswithLP` menambahkan teks di kolom keenam, misalnya `B9140BCD`. "
+        "Kolom itu sengaja tidak dipakai sebagai acuan OCR; teks acuan diketik manual."
+    )
     st.code(
         "0 0.235450 0.771991 0.074074 0.022156\n"
         "# class x_center y_center width height (ternormalisasi)",
         language="text",
     )
-    st.caption(
-        "File `labelswithLP` menambahkan teks di kolom keenam, misalnya `B9140BCD`. "
-        "Kolom itu sengaja tidak dipakai sebagai acuan OCR; teks acuan diketik manual."
-    )
 
-    st.subheader("Acuan OCR")
+with st.container(border=True, key="kartu_acuan"):
+    st.markdown("**Template acuan OCR**")
     if REFERENCE_CSV.exists():
         st.caption(
-            "Template `docs/acuan_ocr.csv` memuat 197 kotak dari 100 citra dengan seed 42. "
+            "`docs/acuan_ocr.csv` memuat 197 kotak dari 100 citra dengan seed 42. "
             "Kolom `text` dan `condition` masih kosong untuk diisi manual."
         )
         st.download_button(
@@ -107,45 +99,47 @@ with main:
             data=REFERENCE_CSV.read_bytes(),
             file_name="acuan_ocr.csv",
             mime="text/csv",
+            width="stretch",
         )
     else:
-        render_empty_state("Template tidak ditemukan", "Jalankan generator template dari modul core.dataset.")
+        render_empty_state(
+            "Template tidak ditemukan",
+            "Jalankan generator template dari modul core.dataset.",
+        )
 
-    st.subheader("Galeri contoh")
-    if not status["available"]:
-        render_empty_state("Galeri nonaktif", "Koneksi dataset gagal. Halaman Deteksi tetap menerima unggahan lokal.")
+with st.container(border=True, key="kartu_galeri"):
+    st.markdown("**Galeri contoh**")
+    st.caption(
+        "Contoh diambil satu per satu hanya setelah tombol ditekan. Rerun tanpa "
+        "interaksi tidak mengunduh berkas baru."
+    )
+    if st.button("Periksa koneksi dan muat 24 contoh", key="dataset_muat"):
+        st.session_state["dataset_status"] = dataset_status()
+        st.session_state["dataset_galeri_dimuat"] = True
+
+    status = st.session_state.get("dataset_status")
+    if status is None:
+        render_empty_state(
+            "Galeri belum dimuat",
+            "Tekan tombol di atas untuk memeriksa koneksi Kaggle dan mengambil contoh.",
+        )
+    elif not status["available"]:
+        render_failure_card(
+            status["message"] + " Halaman Baca Plat tetap menerima unggahan lokal."
+        )
     else:
+        st.caption("Status koneksi: **terhubung** ke Kaggle.")
         with st.expander("Lihat 24 contoh dari split test", expanded=False):
             items = gallery_items(42, 24)
-            columns = st.columns(6)
-            for index, item in enumerate(items):
-                with columns[index % 6]:
+            kolom = st.columns(6)
+            for indeks, item in enumerate(items):
+                with kolom[indeks % 6]:
+                    st.markdown('<div class="gallery-item">', unsafe_allow_html=True)
                     try:
-                        st.image(
-                            get_image_bytes(item["image_path"]),
-                            caption=item["label"],
-                            width="stretch",
-                        )
+                        st.image(get_image_bytes(item["image_path"]), width="stretch")
                     except Exception as exc:
                         st.caption(f"{item['label']}: gagal dimuat ({exc})")
-
-    st.caption(
-        "Setiap file diambil satu per satu dengan `kagglehub.dataset_download(handle, path=...)`. "
-        "Kredensial, bila diperlukan, hanya dibaca dari `st.secrets`."
-    )
-
-with perf:
-    render_performance_panel(
-        [
-            (
-                "Koneksi Kaggle",
-                100.0 if status["available"] else 0.0,
-                "Tersedia" if status["available"] else "Gagal",
-            ),
-            ("Galeri", 100.0 if status["available"] else 0.0, "24 citra, seed 42"),
-            ("Lisensi", 0.0, "Unknown"),
-        ],
-        note="Panel ini merangkum status sumber data, bukan hasil akurasi model.",
-    )
+                    st.caption(item["label"])
+                    st.markdown("</div>", unsafe_allow_html=True)
 
 mark_intro_done()
